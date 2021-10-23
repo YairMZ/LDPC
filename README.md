@@ -14,3 +14,22 @@ or
 python -m pytest --cov-report=html
 ```
 to run also coverage tests.
+
+## Included modules:
+ - AList - The module is allows reading and writing "alist" files. "alist" files format which were invented by David 
+MacKay, allow storing sparse matrices efficiently in files. The format is documented
+[here](http://www.inference.org.uk/mackay/codes/alist.html).
+
+## Examples:
+### AList
+```python
+from utils import AList
+# generate an AList object from a file
+alist = AList.from_file("tests/test_data/Mackay_96.3.963.alist")
+# convert the object to a standard numpy array
+arr = alist.to_array()
+# create an instance from an array
+foo = AList.from_array(arr)
+# save AList to file
+foo.to_file("../tests/test_data/test.alist")
+```
