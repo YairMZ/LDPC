@@ -1,5 +1,6 @@
 import numpy as np
 from utils import AList
+import scipy.sparse as sp
 
 
 class TestAList:
@@ -33,17 +34,41 @@ class TestAList:
         assert a.largest_column_weight == 3
         assert a.column_weights == [2, 3, 3]
         assert a.row_weights == [3, 2, 1, 2]
-        assert a.non_zero_elements_in_row == [[1, 2, 3],
-                                              [1, 2],
-                                              [3],
-                                              [2, 3]]
-        assert a.non_zero_elements_in_column == [[1, 2],
-                                                 [1, 2, 4],
-                                                 [1, 3, 4]]
+        assert a.non_zero_elements_in_row == [[0, 1, 2, ],
+                                              [0, 1],
+                                              [2],
+                                              [1, 2]]
+        assert a.non_zero_elements_in_column == [[0, 1],
+                                                 [0, 1, 3],
+                                                 [0, 2, 3]]
         b = a.to_array()
-        np.testing.assert_array_equal(arr, b)  # type: ignore
+        np.testing.assert_array_equal(arr, b)
 
     def test_verify_alist(self) -> None:
         original_file = "tests/test_data/Mackay_96.3.963.alist"
         a = AList.from_file(original_file)
         assert a.verify_elements() is True
+
+    def test_sparse_arrays(self) -> None:
+        """matrix:      [[1,1,1]
+                        [1,1,0]
+                        [0,0,1]
+                        [0,1,1]]
+        """
+        arr = np.array([[1, 1, 1], [1, 1, 0], [0, 0, 1], [0, 1, 1]])
+        arr = sp.lil_matrix(arr)
+        a = AList.from_sparse(arr)
+        assert arr.shape == (a.m, a.n)
+        assert a.largest_row_weight == 3
+        assert a.largest_column_weight == 3
+        assert a.column_weights == [2, 3, 3]
+        assert a.row_weights == [3, 2, 1, 2]
+        assert a.non_zero_elements_in_row == [[0, 1, 2, ],
+                                              [0, 1],
+                                              [2],
+                                              [1, 2]]
+        assert a.non_zero_elements_in_column == [[0, 1],
+                                                 [0, 1, 3],
+                                                 [0, 2, 3]]
+        b = a.to_sparse()
+        assert sp.spmatrix.sum(arr != b) == 0

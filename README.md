@@ -6,11 +6,11 @@
 My implementation of LDPC codes
 
 To run tests simply clone, cd into the cloned repo, and run:
-```
+```shell
 python -m pytest
 ```
 or
-```
+```shell
 python -m pytest --cov-report=html
 ```
 to run also coverage tests.
@@ -32,4 +32,10 @@ arr = alist.to_array()
 foo = AList.from_array(arr)
 # save AList to file
 foo.to_file("../tests/test_data/test.alist")
+# express the matrix as a CodeStructure object
+structure = foo.code_params()
+# convert AList to a scipy.sparse array
+sp = foo.to_sparse()
+# or convert a sparse matrix to an AList
+bar = AList.from_sparse(sp)
 ```
