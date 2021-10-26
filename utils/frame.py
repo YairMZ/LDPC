@@ -1,6 +1,7 @@
 from __future__ import annotations
 import itertools
 import bitstring
+from typing import Union
 
 
 class Frame:
@@ -35,8 +36,13 @@ class FramesManager:
         """register frame to have a dict of all frames"""
         self.frames_dict[frame.uid] = frame
 
-    def register_pair(self, tx_frame_id: int, rx_frame_id: int) -> None:
-        """register pair as a tx, rx pair"""
+    def register_pair(self, tx_frame: Union[int, Frame], rx_frame: Union[int, Frame]) -> None:
+        """register pair as a tx, rx pair
+        :param tx_frame: frame object or frame uid
+        :param rx_frame: frame object or frame uid
+        """
+        tx_frame_id: int = tx_frame.uid if isinstance(tx_frame, Frame) else tx_frame
+        rx_frame_id: int = rx_frame.uid if isinstance(rx_frame, Frame) else rx_frame
         self.frame_pairs.append((tx_frame_id, rx_frame_id))
 
     def create_frame(self, bits: bitstring.Bits) -> Frame:
@@ -47,6 +53,3 @@ class FramesManager:
     def copy_frame(self, frame: Frame) -> Frame:
         """Note the uid isn't copied"""
         return self.create_frame(frame.bits)
-
-    def get_frames(self) -> dict[int, Frame]:
-        return self.frames_dict
