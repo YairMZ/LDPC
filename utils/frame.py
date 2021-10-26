@@ -4,7 +4,7 @@ import bitstring
 
 
 class Frame:
-    """Frame objects holds binary frames for simulation"""
+    """Frame objects holds binary frames for simulation. Shouldn't be instantiated on is own, use hte manager."""
     uid_generator = itertools.count()
 
     def __init__(self, bits: bitstring.Bits) -> None:
@@ -17,6 +17,12 @@ class Frame:
     def __str__(self) -> str:
         return "id: " + str(self.uid)
 
+    def __eq__(self, other: object) -> bool:
+        """Only bits are compared not uid"""
+        if not isinstance(other, Frame):
+            raise NotImplementedError
+        return self.bits == other.bits  # type: ignore
+
 
 class FramesManager:
     """The class holds all frames in a dictionary with uid as key.
@@ -26,9 +32,11 @@ class FramesManager:
         self.frame_pairs: list[tuple[int, int]] = []
 
     def register_frame(self, frame: Frame) -> None:
+        """register frame to have a dict of all frames"""
         self.frames_dict[frame.uid] = frame
 
     def register_pair(self, tx_frame_id: int, rx_frame_id: int) -> None:
+        """register pair as a tx, rx pair"""
         self.frame_pairs.append((tx_frame_id, rx_frame_id))
 
     def create_frame(self, bits: bitstring.Bits) -> Frame:
@@ -37,4 +45,8 @@ class FramesManager:
         return frame
 
     def copy_frame(self, frame: Frame) -> Frame:
+        """Note the uid isn't copied"""
         return self.create_frame(frame.bits)
+
+    def get_frames(self) -> dict[int, Frame]:
+        return self.frames_dict
