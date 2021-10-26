@@ -30,7 +30,7 @@ class FramesManager:
     It also holds a list of tuples, where each tuple contains a TX frame and a corresponding RX frame."""
     def __init__(self) -> None:
         self.frames_dict: dict[int, Frame] = {}
-        self.frame_pairs: list[tuple[int, int]] = []
+        self.frame_pairs: set[tuple[int, int]] = set()
 
     def register_frame(self, frame: Frame) -> None:
         """register frame to have a dict of all frames"""
@@ -43,7 +43,7 @@ class FramesManager:
         """
         tx_frame_id: int = tx_frame.uid if isinstance(tx_frame, Frame) else tx_frame
         rx_frame_id: int = rx_frame.uid if isinstance(rx_frame, Frame) else rx_frame
-        self.frame_pairs.append((tx_frame_id, rx_frame_id))
+        self.frame_pairs.add((tx_frame_id, rx_frame_id))
 
     def create_frame(self, bits: bitstring.Bits) -> Frame:
         frame = Frame(bits)
