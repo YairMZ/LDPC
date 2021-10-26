@@ -17,14 +17,6 @@ class Frame:
     def __str__(self) -> str:
         return "id: " + str(self.uid)
 
-    def __copy__(self) -> Frame:
-        cls = self.__class__
-        res: Frame = cls.__new__(cls)
-        d = self.__dict__.copy()
-        del d["uid"]
-        res.__dict__.update(d)
-        return res
-
 
 class FramesManager:
     """The class holds all frames in a dictionary with uid as key.
@@ -43,3 +35,6 @@ class FramesManager:
         frame = Frame(bits)
         self.register_frame(frame)
         return frame
+
+    def copy_frame(self, frame: Frame) -> Frame:
+        return self.create_frame(frame.bits)
