@@ -1,3 +1,4 @@
+from __future__ import annotations
 import itertools
 import bitstring
 
@@ -12,6 +13,17 @@ class Frame:
         """
         self.bits = bits
         self.uid = next(Frame.uid_generator)
+
+    def __str__(self) -> str:
+        return "id: " + str(self.uid)
+
+    def __copy__(self) -> Frame:
+        cls = self.__class__
+        res: Frame = cls.__new__(cls)
+        d = self.__dict__.copy()
+        del d["uid"]
+        res.__dict__.update(d)
+        return res
 
 
 class FramesManager:
