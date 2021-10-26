@@ -40,7 +40,7 @@ sp = foo.to_sparse()
 bar = AList.from_sparse(sp)
 ```
 
-###Frames
+### Frames
 ```python
 from utils import Frame, FramesManager
 from bitstring import Bits
