@@ -16,9 +16,13 @@ python -m pytest --cov-report=html
 to run also coverage tests.
 
 ## Included modules:
- - AList - The module is allows reading and writing "alist" files. "alist" files format which were invented by David 
+ - Utilities:
+   - AList - The module is allows reading and writing "alist" files. "alist" files format which were invented by David 
 MacKay, allow storing sparse matrices efficiently in files. The format is documented
 [here](http://www.inference.org.uk/mackay/codes/alist.html).
+   - Frame - Each bit sequence is allocated a frame with a unique id for bookkeeping during simulation.
+ - Encoder:
+   - Generator based encoder (via matrix multiplication). 
 
 ## Examples:
 ### AList
