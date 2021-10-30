@@ -1,0 +1,3 @@
+The zip file is downloaded from IEEE902.3 standard and describes the generator and parity check matrix.
+
+The script converts the these files to list files description of the matrices.
