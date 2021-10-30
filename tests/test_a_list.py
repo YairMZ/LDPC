@@ -6,7 +6,7 @@ import scipy.sparse as sp
 class TestAList:
     def test_files_io(self) -> None:
         # uses a code from Mackay with known params
-        original_file = "tests/test_data/Mackay_96.3.963.alist"
+        original_file = "code_specs/Mackay_96.3.963.alist"
         a = AList.from_file(original_file)
         assert a.n == 96
         assert a.m == 48
@@ -45,7 +45,7 @@ class TestAList:
         np.testing.assert_array_equal(arr, b)
 
     def test_verify_alist(self) -> None:
-        original_file = "tests/test_data/Mackay_96.3.963.alist"
+        original_file = "code_specs/Mackay_96.3.963.alist"
         a = AList.from_file(original_file)
         assert a.verify_elements() is True
 
