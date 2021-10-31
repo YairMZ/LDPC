@@ -11,7 +11,7 @@ foo = AList.from_array(arr)
 foo.to_file("../tests/test_data/test.alist")
 # express the matrix as a CodeStructure object
 structure = foo.code_params()
-# convert AList to a scipy.sparse array
+# convert AList to a scipy sparse array
 sp = foo.to_sparse()
 # or convert a sparse matrix to an AList
 bar = AList.from_sparse(sp)
