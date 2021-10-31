@@ -16,11 +16,16 @@ python -m pytest --cov-report=html
 to run also coverage tests.
 
 -----
-## Included modules:
+## Included modules
  - Utilities: implementing various utility operations to assist with encoding, decoding and simulations.
 [Details](utils/README.md)
    
  - Encoder:
    - Generator based encoder (via matrix multiplication). 
+
+__________
+## Sources
+ - Cai Z., Hao J., Tan P.H., Sun S., Chin P.S., Efficient encoding of IEEE 802.11n LDPC codes. Electronics Letters 25, 1471--1472 (2006).
+  
 
 
