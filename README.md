@@ -15,6 +15,7 @@ python -m pytest --cov-report=html
 ```
 to run also coverage tests.
 
+-----
 ## Included modules:
  - Utilities: implementing various utility operations to assist with encoding, decoding and simulations.
 [Details](utils/README.md)

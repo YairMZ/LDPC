@@ -9,7 +9,7 @@ MacKay, allow storing sparse matrices efficiently in files. The format is docume
    - QCFile - This class allows reading and writing qc files which describes quasi cyclical matrices. The format is
  documented [here](https://aff3ct.readthedocs.io/en/latest/user/simulation/parameters/codec/ldpc/decoder.html).
 
-
+------
 ## Examples:
 ### AList
 
@@ -52,6 +52,9 @@ fm.register_pair(tx_frame, rx_frame)
 
 ### QCFile
 ```python
+from utils import QCFile
+
+
 # generate an object from a file
 qc = QCFile.from_file("../code_specs/ieee802.11/N648_R12.qc")
 # convert the object to a standard numpy array
@@ -65,5 +68,4 @@ sp = foo.to_sparse()
 # trying to build an object from an incompatible matrix will raise a value error
 arr[1, 2] = 1  # Now the array isn't a column permutation of an identity
 QCFile.from_array(arr, qc.z)  # this raises an error
-
 ```
