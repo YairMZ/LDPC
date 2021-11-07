@@ -17,15 +17,14 @@ to run also coverage tests.
 
 -----
 ## Included modules
- - Utilities: implementing various utility operations to assist with encoding, decoding and simulations.
-[Details](utils/README.md)
-   
- - Encoder:
-   - Generator based encoder (via matrix multiplication). 
+ - [Utilities](utils/README.md): implementing various utility operations to assist with encoding, decoding and 
+simulations.
+ - [Encoder](encoder/README.md): implementing a generator based encoder, and encoders for IEEE802.11 (WiFi) LDPC codes.
 
 __________
 ## Sources
  - Cai Z., Hao J., Tan P.H., Sun S., Chin P.S., Efficient encoding of IEEE 802.11n LDPC codes. Electronics Letters 25, 1471--1472 (2006).
+ - IEEE802.11 encoder tested against the implementation in https://github.com/tavildar/LDPC
   
 
 

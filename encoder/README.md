@@ -1,3 +1,18 @@
+# Encoder Module
+The module implements encoders for LDPC codes. Currently implemented:
+   - generator based - The [EncoderG](generator_based_encoder.py) class allows encoding frames via multiplication with a
+specified generator matrix.
+   - IEEE802.11 - The [EncoderWiFi](ieee802_11_encoder.py) class allows encoding frames using the IEEE802.11 spec codes.
+Encoding is done via back substitution.
+
+------
+## Examples:
+### Generator Based 
+
+Add example
+
+### IEEE802.11 (WiFi)
+```python
 import numpy as np
 from bitstring import Bits
 from encoder import WiFiSpecCode, EncoderWiFi
@@ -14,3 +29,4 @@ encoded = enc.encode(bits)
 # verify validity of codeword
 h = QCFile.from_file("../code_specs/ieee802.11/N648_R12.qc").to_array()
 np.dot(h, np.array(encoded)) % 2  # creates an all zero vector as required.
+```
