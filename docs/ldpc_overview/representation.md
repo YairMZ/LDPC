@@ -1,10 +1,11 @@
 ---
-layout: default
 title: Representation
+layout: default
 parent: LDPC Overview
 nav_order: 1
 usemathjax: true
 ---
+
 # {{ page.title }}
 
 This page describes various representations of LDPC codes
