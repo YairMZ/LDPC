@@ -1,37 +1,19 @@
-## Welcome to GitHub Pages
+---
+layout: default
+title: Home
+nav_order: 1
+description: "This website holds notes regarding LDPC codes, as well as notes regarding my implementation of them."
+permalink: /
+---
 
-You can use the [editor on GitHub](https://github.com/YairMZ/LDPC/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+# LDPC Codes
+{: .fs-9 }
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+This website holds my notes regarding LDPC codes, as well as some notes regarding my implementation of them.
+{: .fs-6 .fw-300 }
 
-### Markdown
+---
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+This website accompanies my implementation which may be found on [Github](https://github.com/YairMZ/LDPC).
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/YairMZ/LDPC/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+For questions or suggestions or contributions [contact me](mailto:yairmazal@gmail.com?subject=[GitHub]%20LDPC).
