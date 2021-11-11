@@ -1,6 +1,7 @@
 ---
 title: Home
 permalink: "/"
+position: 0
 layout: default
 nav_order: 1
 description: This website holds notes regarding LDPC codes, as well as notes regarding

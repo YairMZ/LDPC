@@ -1,5 +1,6 @@
 ---
 title: Representation
+position: 3
 layout: default
 parent: LDPC Overview
 nav_order: 1
