@@ -16,4 +16,4 @@ This website holds my notes regarding LDPC codes, as well as some notes regardin
 
 This website accompanies my implementation which may be found on [Github](https://github.com/YairMZ/LDPC).
 
-For questions or suggestions or contributions [contact me](mailto:yairmazal@gmail.com?subject=[GitHub]%20LDPC).
+For questions or suggestions or contributions [contact me](mailto:{{ site.email }}?subject=[GitHub]%20LDPC%Codes).
