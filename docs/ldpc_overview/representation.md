@@ -53,7 +53,10 @@ $$
 
 Per the rule the matrix corresponds to the graph:
 
-![Tanner_graph_example.png](../assets/images/Tanner_graph_example.png)
+{% assign bib_author = site.bib_sources | where:"id","ryan" %}
+| ![Tanner_graph_example.png](../assets/images/Tanner_graph_example.png) |
+|:--:|
+| Image taken from [{{ bib_author[0].name }}]({{bib_author[0].url}})|
 
 For instance, $f_0$ is connected to $c_0,c_1,c_2,c_3$ as implied by the first row of $H$. Since this code is regular, 
 every variable node has 2 edges, and each check node 4 edges.

@@ -47,3 +47,9 @@ gh_edit_repository: "https://github.com/YairMZ/LDPC" # the github URL for your r
 gh_edit_branch: "gh-pages" # the branch that your docs is served from
 gh_edit_source: docs # the source that your files originate from
 gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
+
+bib_sources:
+  - {id: "ryan",
+     name: "An Introduction to LDPC Codes",
+     author: "William E. Ryan",
+     url: "http://tuk88.free.fr/LDPC/ldpcchap.pdf"}
