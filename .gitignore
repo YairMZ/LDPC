@@ -1,0 +1,6 @@
+*.DS_Store
+*.pyc
+*.coverage
+*.log
+*.txt
+/.idea/
