@@ -6,5 +6,11 @@ PREFIX="last_modified_date: "
 STRING="$PREFIX.*$"
 SUBSTITUTE="$PREFIX$DATE"
 if ! grep -q "$SUBSTITUTE" "$FILE"; then
-  sed -i '' "1,/$(echo "$STRING")/ s/$(echo "$STRING")/$(echo "$SUBSTITUTE")/" $FILE
+  if grep -q "$PREFIX" "$FILE"; then
+    sed -i '' "s/$(echo "$STRING")/$(echo "$SUBSTITUTE")/" $FILE
+  else
+    echo "Error!"
+    echo "'$PREFIX' doesn't appear in $FILE"
+    exit 1
+  fi
 fi
