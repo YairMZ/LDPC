@@ -1,5 +1,6 @@
 ---
 title: Representation
+last_modified_date: 2021-11-13
 position: 3
 layout: default
 parent: LDPC Overview
@@ -35,7 +36,7 @@ code depends on the wights via $R=\frac{k}{n}=1-\frac{w_c}{w_r}$.
 ## Graph Representation
 ### Tanner Graph
 The following discussion regards only codes over binary alphabets. For such codes the parity check matrix can be 
-expressed using a bi-partite graph called a Tanner graph (after Tanner who invented them). The two families of nodes are
+expressed using a bipartite graph called a Tanner graph (after Tanner who invented them). The two families of nodes are
 called *variable nodes* (denoted in below graph as $c_i$)  and *check nodes* (denoted in below graph as $f_i$). 
 For an $(n,k)$ code there are $m=n-k$ check nodes (one per parity check equation), and $n$ variable nodes (one per 
 information bit in codeword). The parity check matrix $H$ dictates the graph via the following rule: check node $j$ is 
@@ -59,4 +60,7 @@ Per the rule the matrix corresponds to the graph:
 | Image taken from [{{ bib_author[0].name }}]({{bib_author[0].url}})|
 
 For instance, $f_0$ is connected to $c_0,c_1,c_2,c_3$ as implied by the first row of $H$. Since this code is regular, 
-every variable node has 2 edges, and each check node 4 edges.
+every variable node has 2 edges, and each check node 4 edges. A Tanner graph is characterized by a *cycle* and a 
+*girth*. A cycle of length $\nu$ in a Tanner graph is a closed path of $\nu$ edges. In the example graph shown above, 
+the bold edges exhibit a cycle of 6 edges. A girth $\gamma$ of a Tanner graph is the minimal cycle length in the graph.
+Short cycles degrade the decoding performance of an LDPC decoder.
