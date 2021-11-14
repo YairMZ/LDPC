@@ -1,10 +1,9 @@
 ---
 title: Representation
-last_modified_date: 2021-11-13
-position: 3
+last_modified_date: 2021-11-14
 layout: default
 parent: LDPC Overview
-nav_order: 1
+nav_order: 2
 usemathjax: true
 ---
 
