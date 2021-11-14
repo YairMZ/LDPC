@@ -13,6 +13,7 @@ usemathjax: true
 The described algorithm is taken from  [{{cai[0].name}}]({{cai[0].url}}). The form of the parity check matrices enables
 an efficient encoding scheme. Consider the parity check matrix shown before in block form:
 
+{% assign ieee = site.bib_sources | where:"id","ieee802.11" %}
 | ![ieee_example_parity_check.png](../assets/images/ieee_example_parity_check.png) |
 |:--:|
 | Parity check matrix for $n=648$ bits and rate $r=1/2$, taken from [{{ ieee[0].name }}]({{ieee[0].url}})|
