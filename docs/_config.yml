@@ -59,3 +59,19 @@ bib_sources:
      name: "An Introduction to LDPC Codes",
      author: "William E. Ryan",
      url: "http://tuk88.free.fr/LDPC/ldpcchap.pdf"}
+  - { id: "simgunz",
+    name: "802.11n LDPC code - Presentation",
+    author: "Simone Gaiarin",
+    url: "https://github.com/simgunz/802.11n-ldpc/blob/master/doc/presentazione.pdf" }
+  - { id: "richardson",
+      name: "Efficient encoding of low-density parity-check codes",
+      author: "Richardson, T.J. and Urbanke, R.L.",
+      url: "https://ieeexplore.ieee.org/document/910579" }
+  - { id: "Cai",
+      name: "Efficient encoding of IEEE 802.11n LDPC codes",
+      author: "Cai, Z and Hao, J and Tan, PH and Sun, S and Chin, PS",
+      url: "https://www.researchgate.net/publication/3389450_Efficient_encoding_of_IEEE_80211n_LDPC_codes" }
+  - { id: "ieee802.11",
+      name: "IEEE802.11-2020 Standard",
+      author: "IEEE Computer Society LAN/MAN Standards Committee",
+      url: "https://ieeexplore.ieee.org/document/9363693" }
