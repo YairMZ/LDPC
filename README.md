@@ -3,7 +3,8 @@
 [![codecov](https://codecov.io/gh/YairMZ/LDPC/branch/main/graph/badge.svg?token=2RR3afDfeD)](https://codecov.io/gh/YairMZ/LDPC)
 [![Sourcery](https://img.shields.io/badge/Sourcery-enabled-brightgreen)](https://sourcery.ai)
 # LDPC
-My implementation of LDPC codes
+My implementation of LDPC codes.
+My notes regarding theory and implementation appears on Github Pages: https://yairmz.github.io/LDPC/  
 
 To run tests simply clone, cd into the cloned repo, and run:
 ```shell
