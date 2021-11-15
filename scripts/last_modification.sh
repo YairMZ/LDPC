@@ -14,3 +14,16 @@ if ! grep -q "$SUBSTITUTE" "$FILE"; then
     exit 1
   fi
 fi
+
+PREFIX="last_edit_by: "
+STRING="$PREFIX.*$"
+SUBSTITUTE="$PREFIX$USER"
+if ! grep -q "$SUBSTITUTE" "$FILE"; then
+  if grep -q "$PREFIX" "$FILE"; then
+    sed -i '' "s/$(echo "$STRING")/$(echo "$SUBSTITUTE")/" $FILE
+  else
+    echo "Error!"
+    echo "'$PREFIX' doesn't appear in $FILE"
+    exit 1
+  fi
+fi
