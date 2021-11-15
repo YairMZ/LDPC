@@ -7,6 +7,10 @@ parent: LDPC Overview
 nav_order: 4
 usemathjax: true
 ---
+# {{ page.title }}
+
+This page describes the concept of belief propagation and message passing 
+{: .fs-6 .fw-300 }
 
 Decoding algorithms for LDPC codes generally derive from the belief propagation (BP) algorithm which is also termed the 
 sum-product (SP) or message passing (MP) algorithm. The algorithm is a probabilistic algorithm which considers the 
@@ -56,7 +60,6 @@ Tanner graph corresponding to an $H$ whose zeroth row is $\left[1,1,1,0,1,,0\dot
 $m_{\downarrow 04}$ is shown below. Note the direction of the arrows, which indicate the inputs used by node $f_0$ to 
 formulate the message.
 
-{% assign bib_author = site.bib_sources | where:"id","ryan" %}
 | ![Tanner_graph_example.png](../assets/images/message_passing_down.png) |
 |:--:|
 | Image taken from [{{ bib_author[0].name }}]({{bib_author[0].url}})|
