@@ -28,7 +28,7 @@ columns which exhibit the shown double diagonal form.
 
 Let us denote the input information sequence as $m$ and divide it into $k_b= n_b-m_b$ groups of $Z$ bits, i.e. 
 $m=[m_0, m_1, \dots, m_{k_b-1}]$, where each element of $m$ is itself a vector of length $Z$. The parity sequence can 
-also be grouped as length of $Z$ bits ena dbe expressed as: $p=[p_0, p_1, \dots, p_{m_b-1}]$. correspondingly, codewords
+also be grouped as length of $Z$ bits and expressed as: $p=[p_0, p_1, \dots, p_{m_b-1}]$. correspondingly, codewords
 may be expressed as: 
 
 $$c=[m, p]=[m_0, m_1, \dots, m_{k_b-1},p_0, p_1, \dots, p_{m_b-1}]$$
@@ -72,6 +72,6 @@ Actually, this can even be made simpler! Due to the form of the matrices $h_{i,j
 reduce circular shifts of the vectors $m_j$! Thus, encoding reduces to summation of circular shifts of message bits. 
 Moreover, to avoid recomputing $\lambda_i$, given a message sequence all $m_b$ $\lambda_i$'s may be computed and stored
 in memory (each of them is a vector of $Z$ bits), and the recursive algorithm then needs only to sum them once to obtain
-$p_0$, and then use each of them once more during hte computation.
+$p_0$, and then use each of them once more during the computation.
 
 This algorithm has been implemented in the repo.
