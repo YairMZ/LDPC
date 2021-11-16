@@ -1,6 +1,6 @@
 ---
 title: Probability Domain SPA
-last_modified_date: 2021-11-15
+last_modified_date: 2021-11-16
 last_edit_by: yairmazal
 layout: default
 parent: LDPC Overview
@@ -30,9 +30,9 @@ We begin with a set of definitions:
  - $M_c (\sim j)$ - set of messages from all c-nodes except node $f_j$.
  - $P_i=\Pr(c_i=1\vert y_i )$, where $y_i$ is the channel input (channel model dependent).
  - $S_i$ - the event that parity check equations involving node $c_i$ are satisfied.
- - $q_{ij} (b)=\Pr(c_i=b\vert S_i,y_i,M_c(\sim j))$ - with $b\in\{0,1\}$. For probability domain algorithm we get 
+ - $q_{ij} (b)=\Pr(c_i=b\vert S_i,y_i,M_c(\sim j))$ - with $b\in\\{0,1\\}$. For probability domain algorithm we get 
 $m_{\uparrow ij}=q_ij (b)$.
- - $r_{ji}(b)=\Pr(\text{check equation } f_j \text{ is satisfied}\vert c_i=b,M_v (\sim i))$ - with $b\in\{0,1\}$. For 
+ - $r_{ji}(b)=\Pr(\text{check equation } f_j \text{ is satisfied}\vert c_i=b,M_v (\sim i))$ - with $b\in\\{0,1\\}$. For 
 probability domain algorithm we get  $m_{\downarrow ji}=r_{ji}(b)$.
 
 Note that the listed probabilities are in fact random variables as they are functions of the random channel samples 
@@ -81,7 +81,7 @@ $$r_{ji}(1) = 1- r_{ji}(0)$$
 So far the derivation was channel independent. However, the messages depend on $P_i=\Pr(c_i=1\vert y_i )$ which is 
 clearly channel dependent. As an example we consider three channels:
 
- - BEC – channel samples are $y_i\in\{0,1,E\}$, for which:
+ - BEC – channel samples are $y_i\in\\{0,1,E\\}$, for which:
 
 $$\Pr(c_i=b\vert y_i )=\begin{cases}
 1 & y_i=b \\
@@ -89,7 +89,7 @@ $$\Pr(c_i=b\vert y_i )=\begin{cases}
 1/2 & y_i=E
 \end{cases}$$
 
- - BSC – with error probability $\epsilon$, channel samples are $y_i\in\{0,1\}$, for which:
+ - BSC – with error probability $\epsilon$, channel samples are $y_i\in\\{0,1\\}$, for which:
 
 $$\Pr(c_i=b\vert y_i )=\begin{cases}
  1-\epsilon & y_i=b \\
@@ -99,7 +99,7 @@ $$\Pr(c_i=b\vert y_i )=\begin{cases}
  - BI-AWGNC (binary input AWGN channel). Channel inputs are $x_i=1-2c_i$, and channel samples are $y_i=x_i+n$, where 
 $n\sim N(0,\sigma^2 )$, for which:
 
-$$ \Pr(x_i=x \vert y_i) = [1+\exp⁡(-2yx/\sigma^2)]^{-1} $$
+$$ \Pr(x_i=x \vert y_i) = [1+\exp(-2yx/\sigma^2)]^{-1} $$
 
 ---
 
@@ -118,6 +118,6 @@ for which $h_{ij}=1$.
 # Discussion
  - The presented algorithm may be optimized prior to implementation, For instance step 4 may precede step 3, and then 
 step 3 may  be replaced with $q_{ij}(b)=K_{ij}Q_i(b)/r_{ji}(b)$.
- - This version is intuitive, and has an intuitive interpretation regarding hte estimated quantity. However, it involves
+ - This version is intuitive, and has an intuitive interpretation regarding the estimated quantity. However, it involves
 numerous multiplications which are computationally expensive. The log based version allows substituting multiplications
 by sums.
