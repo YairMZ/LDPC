@@ -1,6 +1,6 @@
 ---
 title: Log Domain SPA
-last_modified_date: 2021-11-16
+last_modified_date: 2021-11-18
 last_edit_by: yairmazal
 layout: default
 parent: LDPC Overview
@@ -71,10 +71,12 @@ $$L(c_i) = \frac{2y_i}{\sigma^2}$$
 # Update Rules
 
 Following [{{ bib_author[0].name }}]({{bib_author[0].url}}) (p.13-14), we get the following update rules:
- - $L(r_{ji})$ - Define $L(q_{ij})=\alpha_{ij} \beta_{ij}$, where $\alpha_{ij}=sign(L(q_{ij}))$, and $\beta_{ij}=\vert L(q_{ij})\vert$. Then:
+ - $L(r_{ji})$ - Define $L(q_{ij})=\alpha_{ij} \beta_{ij}$, where $\alpha_{ij}=sign(L(q_{ij}))$, and 
+$\beta_{ij}=\vert L(q_{ij})\vert$. The sign may be thought of as bit value, while magnitude corresponds to 
+reliability. Then:
 
 $$L(r_{ji})=\prod_{i'\in V_j/i}\alpha_{i'j}
-\phi\left(\sum_{i'\in V_j/i}\phi()\beta_{i'j}\right)$$
+\phi\left(\sum_{i'\in V_j/i}\phi(\beta_{i'j})\right)$$
 
 where: $\phi(x)=-\log{\left[\tanh{\left(\frac{x}{2}\right)}\right]}=\log{\left(\frac{e^x+1}{e^x-1}\right)}$
 
@@ -97,7 +99,7 @@ $$
  2. Update $L(r_{ji})$
  3. Update $L(q_{ij})$
  4. Update $L(Q_i )$
- 5. For all $n$ bits decode $\hat{c}_i=\begin{cases}1 & L(Q_i)<0\\0 & \text{else}\end{cases}$
+ 5. For all $n$ bits decode $$\hat{c}_i=\begin{cases}1 & L(Q_i)<0\\ 0 & \text{else}\end{cases}$$
  6. If $H\hat{c}^T=0$ or exceeded maximal iterations limit, stop, else go to step 2.
 
 ---
