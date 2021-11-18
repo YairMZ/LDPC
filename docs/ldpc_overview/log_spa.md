@@ -75,7 +75,7 @@ Following [{{ bib_author[0].name }}]({{bib_author[0].url}}) (p.13-14), we get th
 $\beta_{ij}=\vert L(q_{ij})\vert$. The sign may be thought of as bit value, while magnitude corresponds to 
 reliability. Then:
 
-$$L(r_{ji})=\prod_{i'\in V_j/i}\alpha_{i'j}
+$$L(r_{ji})=\left(\prod_{i'\in V_j/i}\alpha_{i'j}\right)
 \phi\left(\sum_{i'\in V_j/i}\phi(\beta_{i'j})\right)$$
 
 where: $\phi(x)=-\log{\left[\tanh{\left(\frac{x}{2}\right)}\right]}=\log{\left(\frac{e^x+1}{e^x-1}\right)}$
