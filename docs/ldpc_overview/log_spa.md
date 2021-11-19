@@ -1,6 +1,6 @@
 ---
 title: Log Domain SPA
-last_modified_date: 2021-11-18
+last_modified_date: 2021-11-19
 last_edit_by: yairmazal
 layout: default
 parent: LDPC Overview
@@ -32,10 +32,13 @@ zero). As such, a version which involves additions is preferred.
 # Definitions
 
 Define log-likelihood ratios (LLR):
- - $L(c_i )=\log\left(\frac{\Pr(c_i=0\vert y_i )}{Pr(c_i=1\vert y_i ) }\right)$
- - $L(r_{ji}) = \log\left(\frac{r_{ji}(0)}{r_{ji}(1)}\right)$
- - $L(q_{ij}) = \log\left(\frac{q_{ij}(0)}{q_{ij}(1)}\right)$
- - $L(Q_i)=\log\left(\frac{Q_i(0)}{Q_i(1)}\right)$
+ - $L(c_i )=\log\left(\frac{\Pr(c_i=0\vert y_i )}{Pr(c_i=1\vert y_i ) }\right)$ - log-likelihood of bit values given 
+channel symbols.
+ - $L(r_{ji}) = \log\left(\frac{r_{ji}(0)}{r_{ji}(1)}\right)$ - log-likelihood of validity of parity equation $j$  given
+bit value using information extrinsic to v-node $i$
+ - $L(q_{ij}) = \log\left(\frac{q_{ij}(0)}{q_{ij}(1)}\right)$ - log-likelihood of bit value (v-node $i$) using 
+information extrinsic to c-node $j$.
+ - $L(Q_i)=\log\left(\frac{Q_i(0)}{Q_i(1)}\right)$ - log-likelihood of bit value (v-node $i$).
 
 For the LLR version of the algorithm, the messages passed are:
 
