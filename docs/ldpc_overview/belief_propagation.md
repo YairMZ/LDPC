@@ -1,6 +1,6 @@
 ---
 title: Belief Propagation
-last_modified_date: 2021-11-15
+last_modified_date: 2021-11-23
 last_edit_by: yairmazal
 layout: default
 parent: LDPC Overview
@@ -12,8 +12,8 @@ usemathjax: true
 This page describes the concept of belief propagation and message passing 
 {: .fs-6 .fw-300 }
 
-Decoding algorithms for LDPC codes generally derive from the belief propagation (BP) algorithm which is also termed the 
-sum-product (SP) or message passing (MP) algorithm. The algorithm is a probabilistic algorithm which considers the 
+Decoding algorithms for LDPC codes generally derive from the belief propagation (BP) algorithm, which is also termed the
+sum-product (SP) or message passing (MP) algorithm. The algorithm is a probabilistic algorithm that considers the 
 posterior probabilities of bits ($c_i$) given channel observations $\mathbf{y}$. The algorithm may be phrased in terms
 of probability:
 
@@ -36,11 +36,11 @@ $$
 ---
 
 # Message Passing
-The algorithm is an iterative algorithm which conceptually “passes messages” between nearest neighbor nodes of a Tanner
-graph. Each node passes only **extrinsic** information, i.e. each node processes all relevant information gathered from 
-other nodes and possibly the channel sample, but when passing a message to a specific node, it uses information only 
-from **other** nodes. Recalling the [Tanner graph](./representation.md#tanner-graph) representation of the code, 
-messages can either be passed from variable nods to check nodes or the other way around.
+The algorithm is an iterative algorithm that conceptually "passes messages" between nearest-neighbor nodes of a Tanner
+graph. Each node passes only **extrinsic** information, i.e., each node processes all relevant information gathered from
+other nodes and possibly the channel sample. Still, when passing a message to a specific node, the sender uses 
+information only from **other** nodes. Recalling the [Tanner graph](./representation.md#tanner-graph) representation of 
+the code, messages can either be passed from variable nodes to check nodes or the other way around.
 
 ## Passing Up
 Message passing from variable to check nodes is referred to as passing *up* (denoted $m_{\uparrow ij}$). The information
@@ -67,14 +67,14 @@ formulate the message.
 ---
 
 # Algorithm Concept
-The algorithm goes along the following concept:
- - Each iterative step is divided to two half steps:
+The algorithm goes along the following lines:
+ - Each iterative step is divided into two half steps:
    - First, all variable nodes pass messages to check nodes.
-   - Then, all check nodes passes messages to variable nodes.
- - Iterations are done until a stop criteria, or a predetermined threshold.
- - After iterations are done, bit values $c_i$ are estimated to form decoding decision.
+   - Then, all check nodes pass messages to variable nodes.
+ - Iterations are done until a stop criterion or a predetermined threshold.
+ - After iterations are done, bit values $c_i$ are estimated to form a decoding decision.
 
 The algorithm assumes messages are statistically independent. This assumption doesn't hold if channel samples $y_i$ 
 aren't independent (which is possible). Even if samples are independent, the messages aren't if the graph contains 
 cycles (for girth $\gamma$, independence holds for $\gamma/2$ iterations). Nonetheless, even though the assumptions 
-aren't adhered, simulation showed performance can still be good if short cycles are avoided.
+aren't adhered to, simulations show the performance can still be good if short cycles are avoided.

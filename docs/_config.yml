@@ -75,3 +75,7 @@ bib_sources:
       name: "IEEE802.11-2020 Standard",
       author: "IEEE Computer Society LAN/MAN Standards Committee",
       url: "https://ieeexplore.ieee.org/document/9363693" }
+  - { id: "ryan book",
+      name:  "Channel codes : classical and modern",
+      author: "William E. Ryan",
+      url: "https://www.cambridge.org/il/academic/subjects/engineering/communications-and-signal-processing/channel-codes-classical-and-modern" }

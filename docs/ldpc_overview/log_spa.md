@@ -1,6 +1,6 @@
 ---
 title: Log Domain SPA
-last_modified_date: 2021-11-19
+last_modified_date: 2021-11-23
 last_edit_by: yairmazal
 layout: default
 parent: LDPC Overview
@@ -24,9 +24,9 @@ Outline of this page:
 ---
 # Motivation
 
-The [probability domain](probability_spa.md) version of the algorithm, involves many multiplications. This may be costly
-in terms of computation for hardware implementation. It may also introduce numerical instabilities (multiplication by 
-zero). As such, a version which involves additions is preferred.
+The [probability domain](probability_spa.md) version of the algorithm involves many multiplications. These 
+multiplications may be costly in terms of computation for hardware implementation. It may also introduce numerical 
+instabilities (multiplication by zero). As such, a version that involves additions is preferred.
 
 ---
 # Definitions
@@ -55,9 +55,9 @@ The channel dependency is also transformed to log domain.
  - BEC – channel samples are $y_i\in\\{0,1,E\\}$, for which:
 
 $$L(c_i)=\begin{cases}
-+\infty &	y_i=b	\\
--\infty	&	y_i=b^c	\\
-0	&	y_i=E
++\infty &  y_i=b  \\
+-\infty    &  y_i=b^c    \\
+0  &  y_i=E
 \end{cases}$$
  
  - BSC – with error probability $\epsilon$, channel samples are $y_i\in\\{0,1\\}$, for which:
@@ -108,9 +108,9 @@ $$
 ---
 
 # Discussion
- - The complicated function $\phi(x)$ is rather well-behaved for $x>0$ (see figure below) and can be implemented using a 
-lookup table.
- - Reduced complexity versions of this decoder exist where the product can be eliminated altogether subject to some 
+ - The complicated function $\phi(x)$ is relatively well-behaved for $x>0$ (see figure below) and can be implemented 
+using a lookup table.
+ - Reduced complexity versions of this decoder exist where the product can be eliminated subject to some 
 approximations.
 
 | ![phi(x).png](../assets/images/phi_x.png) 

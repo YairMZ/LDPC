@@ -1,6 +1,6 @@
 ---
 title: Probability Domain SPA
-last_modified_date: 2021-11-16
+last_modified_date: 2021-11-23
 last_edit_by: yairmazal
 layout: default
 parent: LDPC Overview
@@ -35,7 +35,7 @@ $m_{\uparrow ij}=q_ij (b)$.
  - $r_{ji}(b)=\Pr(\text{check equation } f_j \text{ is satisfied}\vert c_i=b,M_v (\sim i))$ - with $b\in\\{0,1\\}$. For 
 probability domain algorithm we get  $m_{\downarrow ji}=r_{ji}(b)$.
 
-Note that the listed probabilities are in fact random variables as they are functions of the random channel samples 
+Note that the listed probabilities are, in fact, random variables as they are functions of the random channel samples 
 $y_i$. As shown in the figure below, for the probability domain algorithm, $q_{ij}$ are the messages passed from v-nodes
 to c-nodes, while $r_{ji}$ are the messages passed from c-nodes to v-nodes.
 
@@ -59,16 +59,17 @@ which have edges connecting to variable node $i$, *except* for check node $j$, a
 that the algorithm passes only *extrinsic* information.
 
 # Factorizing $r_{ji}(b)$
-Note the following observation made by Gallager.Consider a sequence of $M$ independent bits $a_i$, for which 
-$\Pr(a_i=1)=p_i$. Then the probability of having an *even* number of 1’s is:
+Note the following observation made by Gallager. Consider a sequence of $M$ independent bits $a_i$, for which 
+$\Pr(a_i=1)=p_i$. Then the probability of having an *even* number of 1's is:
 
 $$
 \frac{1}{2}+\frac{1}{2}\prod_{i=1}^M (1-2p_i )
 $$
 
-which can be found by induction on $M$. Now, in order to satisfy any parity check equation $f_j$ over a **binary** 
-alphabet, it must contain an even number of 1's. Thus, by mapping $p_i\to q_{ij}(1)$ and conditioning on $c_i=0$ (so 
-that all other bit must have an even number of 1's), we get from definition:
+which can be found by induction on $M$. Now, for equation $f_j$ over a **binary** 
+alphabet, to satisfy the parity check requirement, it must contain an even number of 1's. Thus, by mapping 
+$p_i\to q_{ij}(1)$ and conditioning on $c_i=0$ (so that all other bits must have an even number of 1's), we get from the
+definition:
 
 $$r_{ji}(0) = \frac{1}{2}+\frac{1}{2}\prod_ {i'\in V_j/i}(1-2q_{i'j}(1))$$
 
@@ -78,8 +79,8 @@ $$r_{ji}(1) = 1- r_{ji}(0)$$
 
 
 # Channel Models
-So far the derivation was channel independent. However, the messages depend on $P_i=\Pr(c_i=1\vert y_i )$ which is 
-clearly channel dependent. As an example we consider three channels:
+So far, the derivation was channel-independent. However, the messages depend on $P_i=\Pr(c_i=1\vert y_i )$ which is 
+clearly channel dependent. As an example, we consider three channels:
 
  - BEC – channel samples are $y_i\in\\{0,1,E\\}$, for which:
 
@@ -118,6 +119,6 @@ for which $h_{ij}=1$.
 # Discussion
  - The presented algorithm may be optimized prior to implementation, For instance step 4 may precede step 3, and then 
 step 3 may  be replaced with $q_{ij}(b)=K_{ij}Q_i(b)/r_{ji}(b)$.
- - This version is intuitive, and has an intuitive interpretation regarding the estimated quantity. However, it involves
-numerous multiplications which are computationally expensive. The log based version allows substituting multiplications
+ - This version is intuitive and has an intuitive interpretation regarding the estimated quantity. However, it involves
+numerous multiplications, which are computationally expensive. The log-based version allows substituting multiplications
 by sums.

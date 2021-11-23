@@ -1,6 +1,6 @@
 ---
 title: Encoding
-last_modified_date: 2021-11-14
+last_modified_date: 2021-11-23
 last_edit_by: yairmazal
 layout: default
 parent: LDPC Overview
@@ -14,7 +14,7 @@ This page describes the encoding challenge of LDPC codes
 
 ---
 Even though the parity check matrix of an LDPC code is sparse, the same does not generally hold for the generator matrix
-$G$. Correspondingly, encoding via matrix multiplication, i.e. via $c=uG$ incurs a computational cost of 
+$G$. Correspondingly, encoding via matrix multiplication, i.e., via $c=uG$, incurs a computational cost of 
 $\mathcal{O}(n^2)$.
 
 {% assign richardson = site.bib_sources | where:"id","richardson" %}
