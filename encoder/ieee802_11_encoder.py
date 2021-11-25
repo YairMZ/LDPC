@@ -4,6 +4,7 @@ import numpy as np
 from bitstring import Bits
 from utils import IncorrectLength, QCFile
 import os
+from numpy.typing import NDArray
 
 
 class WiFiSpecCode(Enum):
@@ -45,19 +46,8 @@ class EncoderWiFi(Encoder):
         """
         if len(information_bits) != self.k:
             raise IncorrectLength
-        # break message bits into groups (rows) of Z bits. Each row is a subset of z bits, overall k message bits
-        bit_blocks = np.array(information_bits, dtype=np.int_).reshape((self.k//self.z, self.z))
 
-        # find shifted messages (termed lambda_i in article)
-        shifted_messages = np.zeros((self.m//self.z, self.z), dtype=np.int_)  # each row is a sum of circular shifts of
-        # message bits (some lambda_i in article). One row per block of h.
-        for i in range(self.m//self.z):
-            for j in range(self.k//self.z):
-                if self.block_structure[i][j] >= 0:  # zero blocks don't contribute to parity bits
-                    # multiply by translation reduces to shift.
-                    vec = np.roll(bit_blocks[j, :], -self.block_structure[i][j])
-                    shifted_messages[i, :] = np.logical_xor(shifted_messages[i, :], vec)  # xor as sum mod 2
-
+        shifted_messages = self._shifted_messages(information_bits)
         parities = np.zeros((self.m//self.z, self.z), dtype=np.int_)
         # special parts see article
         parities[0, :] = np.sum(shifted_messages, axis=0) % 2  # find first batch of z parity bits
@@ -72,3 +62,19 @@ class EncoderWiFi(Encoder):
                 parities[idx+1, :] = (parities[idx, :] + shifted_messages[idx, :]) % 2
 
         return information_bits + Bits(np.ravel(parities))
+
+    def _shifted_messages(self, information_bits: Bits) -> NDArray[np.int_]:
+        # break message bits into groups (rows) of Z bits. Each row is a subset of z bits, overall k message bits
+        bit_blocks = np.array(information_bits, dtype=np.int_).reshape((self.k // self.z, self.z))
+
+        # find shifted messages (termed lambda_i in article)
+        shifted_messages = np.zeros((self.m // self.z, self.z),
+                                    dtype=np.int_)  # each row is a sum of circular shifts of
+        # message bits (some lambda_i in article). One row per block of h.
+        for i in range(self.m // self.z):
+            for j in range(self.k // self.z):
+                if self.block_structure[i][j] >= 0:  # zero blocks don't contribute to parity bits
+                    # multiply by translation reduces to shift.
+                    vec = np.roll(bit_blocks[j, :], -self.block_structure[i][j])
+                    shifted_messages[i, :] = np.logical_xor(shifted_messages[i, :], vec)  # xor as sum mod 2
+        return shifted_messages
