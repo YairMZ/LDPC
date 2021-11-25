@@ -1,4 +1,4 @@
-from utils import Frame, FramesManager
+from utils import FramesManager
 from bitstring import Bits
 
 # Frames shouldn't be instantiated on their own, but instead using the manager
@@ -12,4 +12,3 @@ rx_frame = fm.copy_frame(tx_frame)
 print(rx_frame.uid != tx_frame.uid)
 # two frames can be registered as a tx, rx pair:
 fm.register_pair(tx_frame, rx_frame)
-

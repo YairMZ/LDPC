@@ -1,5 +1,4 @@
 from encoder import EncoderG
-import numpy as np
 import pytest
 from utils import NonBinaryMatrix, AList, IncorrectLength
 import numpy as np
