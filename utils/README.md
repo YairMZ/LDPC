@@ -34,7 +34,7 @@ bar = AList.from_sparse(sp)
 
 ### Frames
 ```python
-from utils import Frame, FramesManager
+from utils import FramesManager
 from bitstring import Bits
 
 # Frames shouldn't be instantiated on their own, but instead using the manager
