@@ -1,5 +1,4 @@
 from encoder import EncoderG
-import numpy as np
 import pytest
 from utils import NonBinaryMatrix, AList, IncorrectLength
 import numpy as np
@@ -17,7 +16,7 @@ class TestEncoderG:
         enc = EncoderG(g)
         assert enc.n == 7
         assert enc.k == 4
-        np.testing.assert_array_equal(g, enc.generator)
+        np.testing.assert_array_equal(g, enc.generator)  # type: ignore
 
     def test_encoding(self) -> None:
         g = AList.from_file("tests/test_data/Hamming_7_4_g.alist").to_array()

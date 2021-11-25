@@ -30,7 +30,7 @@ class TestQCFile:
         assert arr.shape == (a.z*a.r, a.z*a.c)
         assert a.block_structure == [[0, 1], [2, -1]]
         b = a.to_array()
-        np.testing.assert_array_equal(arr, b)
+        np.testing.assert_array_equal(arr, b)  # type: ignore
 
     def test_bad_array(self) -> None:
         z = 10

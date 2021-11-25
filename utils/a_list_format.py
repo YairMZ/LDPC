@@ -17,6 +17,7 @@ class InconsistentAList(Exception):
 # noinspection SpellCheckingInspection
 @dataclass(frozen=True)
 class AList:
+    """This class describes an Alist file per the definition of Mackay"""
     n: int  # number of columns
     m: int  # number of rows
     largest_column_weight: int

@@ -94,4 +94,4 @@ class QCFile:
         if not isinstance(other, QCFile):
             return False
         return self.z == other.z and self.block_structure == other.block_structure and self.r == other.r and \
-               self.c == other.c
+            self.c == other.c

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class CodeStructure:
+    """Description of general LDPC code using a minimal description of the parity check matrix"""
     num_vnodes: int  # number of variable nodes (information bits) per frame
     num_cnodes: int  # number of check nodes (parity bits) per frame
     max_vnode_deg: int

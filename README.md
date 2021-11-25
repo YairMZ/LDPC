@@ -4,7 +4,7 @@
 [![Sourcery](https://img.shields.io/badge/Sourcery-enabled-brightgreen)](https://sourcery.ai)
 # LDPC
 My implementation of LDPC codes.
-My notes regarding theory and implementation appears on Github Pages: https://yairmz.github.io/LDPC/  
+My notes regarding theory and implementation appears on GitHub Pages: https://yairmz.github.io/LDPC/  
 
 To run tests simply clone, cd into the cloned repo, and run:
 ```shell
@@ -24,8 +24,11 @@ simulations.
 
 __________
 ## Sources
- - Cai Z., Hao J., Tan P.H., Sun S., Chin P.S., Efficient encoding of IEEE 802.11n LDPC codes. Electronics Letters 25, 1471--1472 (2006).
+ - Cai Z., Hao J., Tan P.H., Sun S., Chin P.S., Efficient encoding of IEEE 802.11n LDPC codes. Electronics Letters 25, 
+1471--1472 (2006).
  - IEEE802.11 encoder tested against the implementation in https://github.com/tavildar/LDPC
+ - [Channel codes : classical and modern](https://www.cambridge.org/il/academic/subjects/engineering/communications-and-signal-processing/channel-codes-classical-and-modern)
+by William E. Ryan, 2009.
   
 
 
