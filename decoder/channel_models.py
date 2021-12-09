@@ -15,5 +15,5 @@ def bsc_llr(p: float) -> ChannelModel:
     """
     return lambda y: np.power(-1, y) * np.log((1-p)/p)  # type: ignore
 
-# Simply add more channel models by writing a function which receives a channel symbol as input and returns an LLL as
+# Simply add more channel models by writing a function which receives a channel symbol as input and returns an LLR as
 # output
