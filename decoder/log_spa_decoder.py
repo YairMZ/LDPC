@@ -5,8 +5,14 @@ from collections.abc import Sequence
 from .channel_models import ChannelModel
 from typing import Optional
 from bitstring import Bits
+from utils import IncorrectLength
 
-__all__ = ["LogSpaDecoder"]
+__all__ = ["LogSpaDecoder", "InfoBitsNotSpecified"]
+
+
+class InfoBitsNotSpecified(Exception):
+    """Raised when a non-binary matrix is used while a binary one expected"""
+    pass
 
 
 class LogSpaDecoder:
@@ -39,7 +45,7 @@ class LogSpaDecoder:
             - no_iterations is the number of iterations of belief propagation before exiting the loop
         """
         if len(channel_word) != self.n:
-            raise ValueError("incorrect block size")
+            raise IncorrectLength("incorrect block size")
 
         # initial step
         for idx, vnode in enumerate(self.graph.ordered_v_nodes()):
@@ -68,4 +74,4 @@ class LogSpaDecoder:
         if self.info_idx is not None:
             return Bits(auto=estimate[self.info_idx])
         else:
-            raise RuntimeError("decoder cannot tell info bits")
+            raise InfoBitsNotSpecified("decoder cannot tell info bits")

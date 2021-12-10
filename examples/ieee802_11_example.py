@@ -16,14 +16,14 @@ encoded = enc.encode(info_bits)
 h = QCFile.from_file("../code_specs/ieee802.11/N648_R12.qc").to_array()
 np.dot(h, np.array(encoded)) % 2  # creates an all zero vector as required.
 
-# create a decoder which assumes a probability of p=0.1 for bit flips by the channel
+# create a decoder which assumes a probability of p=0.05 for bit flips by the channel
 # allow up to 10 iterations for the bp decoder.
-p = 0.1
+p = 0.05
 decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20, info_idx=np.array([True]*324 + [False]*324))
 
 # create a corrupted version of encoded codeword with error rate p
 corrupted = BitArray(encoded)
-no_errors = int(len(corrupted)*p)//2
+no_errors = int(len(corrupted)*p)
 error_idx = rng.choice(len(corrupted), size=no_errors, replace=False)
 for idx in error_idx:
     corrupted[idx] = not corrupted[idx]
