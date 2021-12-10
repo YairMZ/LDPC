@@ -1,5 +1,5 @@
 import numpy as np
-from utils import AList
+from ldpc.utils import AList
 
 # generator
 with open("g.txt") as f:

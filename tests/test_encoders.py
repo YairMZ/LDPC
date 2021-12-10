@@ -1,6 +1,6 @@
-from encoder import EncoderG
+from ldpc.encoder import EncoderG
 import pytest
-from utils import NonBinaryMatrix, AList, IncorrectLength
+from ldpc.utils import NonBinaryMatrix, AList, IncorrectLength
 import numpy as np
 from bitstring import Bits
 

@@ -1,8 +1,8 @@
-from utils import QCFile
+from ldpc.utils import QCFile
 
 
 # generate an object from a file
-qc = QCFile.from_file("../code_specs/ieee802.11/N648_R12.qc")
+qc = QCFile.from_file("../ldpc/code_specs/ieee802.11/N648_R12.qc")
 # convert the object to a standard numpy array
 arr = qc.to_array()
 # create an instance from an existing array

@@ -1,4 +1,4 @@
-from utils import FramesManager
+from ldpc.utils import FramesManager
 from bitstring import Bits
 
 

@@ -5,7 +5,7 @@ from collections.abc import Sequence
 from .channel_models import ChannelModel
 from typing import Optional
 from bitstring import Bits
-from utils import IncorrectLength
+from ldpc.utils import IncorrectLength
 
 __all__ = ["LogSpaDecoder", "InfoBitsNotSpecified"]
 

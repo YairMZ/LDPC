@@ -1,8 +1,8 @@
 import numpy as np
 from bitstring import BitArray, Bits
-from decoder import LogSpaDecoder, bsc_llr
-from encoder import EncoderWiFi, WiFiSpecCode
-from utils import QCFile
+from ldpc.decoder import LogSpaDecoder, bsc_llr
+from ldpc.encoder import EncoderWiFi, WiFiSpecCode
+from ldpc.utils import QCFile
 
 # create information bearing bits
 rng = np.random.default_rng()
@@ -13,7 +13,7 @@ enc = EncoderWiFi(WiFiSpecCode.N648_R12)
 encoded = enc.encode(info_bits)
 
 # verify validity of codeword
-h = QCFile.from_file("../code_specs/ieee802.11/N648_R12.qc").to_array()
+h = QCFile.from_file("../ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
 np.dot(h, np.array(encoded)) % 2  # creates an all zero vector as required.
 
 # create a decoder which assumes a probability of p=0.05 for bit flips by the channel

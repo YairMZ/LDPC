@@ -1,9 +1,9 @@
 import numpy as np
 from bitstring import Bits, BitArray
-from encoder import WiFiSpecCode, EncoderWiFi
+from ldpc.encoder import WiFiSpecCode, EncoderWiFi
 import pytest
-from utils import IncorrectLength, QCFile
-from decoder import LogSpaDecoder, bsc_llr, InfoBitsNotSpecified
+from ldpc.utils import IncorrectLength, QCFile
+from ldpc.decoder import LogSpaDecoder, bsc_llr, InfoBitsNotSpecified
 
 
 class TestEncoder802_11:
@@ -69,7 +69,7 @@ class TestEncoder802_11:
 class TestDecoder802_11:
     def test_incorrect_length(self) -> None:
         p = 0.1
-        h = QCFile.from_file("code_specs/ieee802.11/N648_R12.qc").to_array()
+        h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
         decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20)
         bits = np.array([1, 1, 0], dtype=np.int_)
         with pytest.raises(IncorrectLength):
@@ -89,7 +89,7 @@ class TestDecoder802_11:
         for idx in error_idx:
             corrupted[idx] = not corrupted[idx]
 
-        h = QCFile.from_file("code_specs/ieee802.11/N648_R12.qc").to_array()
+        h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
         decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20, info_idx=np.array([True]*324 + [False]*324))
         decoded = Bits()
         decoded_info = Bits()
@@ -103,7 +103,7 @@ class TestDecoder802_11:
 
     def test_decoder_no_info(self) -> None:
         p = 0.1
-        h = QCFile.from_file("code_specs/ieee802.11/N648_R12.qc").to_array()
+        h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
         decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20)
         estimate = np.array(Bits(bytes=bytes(list(range(81)))), np.int_)
         with pytest.raises(InfoBitsNotSpecified):
