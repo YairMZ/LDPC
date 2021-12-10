@@ -25,6 +25,7 @@ to run tests in parallel (with number of CPU's dictated by machine) to speed up 
  - [Utilities](utils/README.md): implementing various utility operations to assist with encoding, decoding and 
 simulations.
  - [Encoder](encoder/README.md): implementing a generator based encoder, and encoders for IEEE802.11 (WiFi) LDPC codes.
+ - [Decoder](decoder/README.md): implementing a Log-SPA based BP decoder.
 
 __________
 ## Sources
