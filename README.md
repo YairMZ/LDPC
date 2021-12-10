@@ -14,7 +14,11 @@ or
 ```shell
 python -m pytest --cov-report=html
 ```
-to run also coverage tests.
+to run also coverage tests, or
+```shell
+python -m pytest  -n auto --cov-report=html
+```
+to run tests in parallel (with number of CPU's dictated by machine) to speed up tests.
 
 -----
 ## Included modules
