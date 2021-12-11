@@ -5,7 +5,10 @@
 # LDPC
 My implementation of LDPC codes.
 My notes regarding theory and implementation appears on GitHub Pages: https://yairmz.github.io/LDPC/  
-
+To install:
+```shell
+pip install sim-ldpc
+```
 To run tests simply clone, cd into the cloned repo, and run:
 ```shell
 python -m pytest
