@@ -78,7 +78,7 @@ class LogSpaDecoder:
             raise InfoBitsNotSpecified("decoder cannot tell info bits")
     
     def vnodes(self) -> list[VNode]:
-        return self.graph.ordered_v_nodes()  # type: ignore
+        return self.graph.ordered_v_nodes()
 
     def update_channel_model(self, channel_models: dict[int, ChannelModel]) -> None:
         """
