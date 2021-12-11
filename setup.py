@@ -10,7 +10,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 README = HERE.joinpath("README.md").read_text()
 
 setup(
-    name='SimLDPC',
+    name='sim-ldpc',
     version=VERSION,
     packages=['ldpc'],
     url='https://github.com/YairMZ/LDPC',
