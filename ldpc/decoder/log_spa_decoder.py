@@ -6,6 +6,7 @@ from .channel_models import ChannelModel
 from typing import Optional
 from bitstring import Bits
 from ldpc.utils import IncorrectLength
+from .node import VNode
 
 __all__ = ["LogSpaDecoder", "InfoBitsNotSpecified"]
 
@@ -75,3 +76,17 @@ class LogSpaDecoder:
             return Bits(auto=estimate[self.info_idx])
         else:
             raise InfoBitsNotSpecified("decoder cannot tell info bits")
+    
+    def vnodes(self) -> list[VNode]:
+        return self.graph.ordered_v_nodes()  # type: ignore
+
+    def update_channel_model(self, channel_models: dict[int, ChannelModel]) -> None:
+        """
+        rectify channel model for specific vnodes
+         
+        :param channel_models: a dictionary with keys as node uid, and value as a new channel model
+        """
+        for uid, model in channel_models.items():
+            node = self.graph.v_nodes.get(uid)
+            if isinstance(node, VNode):
+                node.channel_model = model
