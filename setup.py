@@ -10,23 +10,26 @@ HERE = pathlib.Path(__file__).resolve().parent
 README = HERE.joinpath("README.md").read_text()
 
 setup(
-    name='IEEE LDPC',
+    name='SimLDPC',
     version=VERSION,
-    packages=['code_specs', 'ldpc'],
-    url='https://github.com/YairMZ/belief_propagation',
+    packages=['ldpc'],
+    url='https://github.com/YairMZ/LDPC',
     license='MIT',
     author='Yair Mazal',
     author_email='yairmazal@gmail.com',
-    description='Belief propagation on Tanner graphs. Implements an LLR based LDPC decoder.',
+    description='Simulate LDPC codes, both encoding and decoding',
     long_description=README,
     long_description_content_type="text/markdown",
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Intended Audience :: Science/Research",
+        'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
+        'Intended Audience :: Telecommunications Industry',
         "Topic :: Scientific/Engineering"
         ],
     include_package_data=True,
-    install_requires=["numpy", "networkx"],
-    keywords=["LDPC", "Belief Propagation", "SPA", "Tanner Graph"]
+    install_requires=["numpy", "networkx", "scipy", "bitstring"],
+    keywords=["LDPC", "Belief Propagation", "SPA", "Tanner Graph", "IEEE 802.11"]
 )
