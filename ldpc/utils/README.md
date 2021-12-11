@@ -14,7 +14,7 @@ MacKay, allow storing sparse matrices efficiently in files. The format is docume
 ### AList
 
 ```python
-from utils import AList
+from ldpc.utils import AList
 
 # generate an AList object from a file
 alist = AList.from_file("code_specs/Mackay_96.3.963.alist")
@@ -33,8 +33,9 @@ bar = AList.from_sparse(sp)
 ```
 
 ### Frames
+
 ```python
-from utils import FramesManager
+from ldpc.utils import FramesManager
 from bitstring import Bits
 
 # Frames shouldn't be instantiated on their own, but instead using the manager
@@ -51,12 +52,12 @@ fm.register_pair(tx_frame, rx_frame)
 ```
 
 ### QCFile
-```python
-from utils import QCFile
 
+```python
+from ldpc.utils import QCFile
 
 # generate an object from a file
-qc = QCFile.from_file("../code_specs/ieee802.11/N648_R12.qc")
+qc = QCFile.from_file("../ldpc/code_specs/ieee802.11/N648_R12.qc")
 # convert the object to a standard numpy array
 arr = qc.to_array()
 # create an instance from an existing array

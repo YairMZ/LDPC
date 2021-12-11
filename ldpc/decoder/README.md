@@ -7,14 +7,14 @@ The module implements decoders for LDPC codes. Currently implemented:
 ## Examples:
 
 ### Log-SPA
+
 ```python
 import numpy as np
 from bitstring import Bits, BitArray
-from encoder import WiFiSpecCode, EncoderWiFi
+from ldpc.encoder import WiFiSpecCode, EncoderWiFi
 import pytest
-from utils import IncorrectLength, QCFile
-from decoder import LogSpaDecoder, bsc_llr, InfoBitsNotSpecified
-
+from ldpc.utils import IncorrectLength, QCFile
+from ldpc.decoder import LogSpaDecoder, bsc_llr, InfoBitsNotSpecified
 
 info_bits = Bits(auto=np.genfromtxt(
     'tests/test_data/ieee_802_11/info_bits_N648_R12.csv', delimiter=',', dtype=np.int_))
@@ -22,7 +22,7 @@ encoded_ref = Bits(auto=np.genfromtxt(
     'tests/test_data/ieee_802_11/encoded_N648_R12.csv', delimiter=',', dtype=np.int_))
 
 # corrupt bits by flipping with probability p.
-p = 0.01 
+p = 0.01
 corrupted = BitArray(encoded_ref)
 no_errors = int(len(corrupted) * p)
 rng = np.random.default_rng()
@@ -33,7 +33,7 @@ for idx in error_idx:
 # create a decoder which assumes a probability of p=0.01 for bit flips by a BSC channel.
 # allow up to 20 iterations for the bp decoder.
 h = QCFile.from_file("code_specs/ieee802.11/N648_R12.qc").to_array()
-decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20, info_idx=np.array([True]*324 + [False]*324))
+decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20, info_idx=np.array([True] * 324 + [False] * 324))
 decoded = Bits()
 decoded_info = Bits()
 for frame_idx in range(len(corrupted) // decoder.n):

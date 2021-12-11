@@ -12,15 +12,15 @@ Encoding is done via back substitution.
 Add example
 
 ### IEEE802.11 (WiFi)
+
 ```python
 import numpy as np
 from bitstring import Bits
-from encoder import WiFiSpecCode, EncoderWiFi
-from utils import QCFile
-
+from ldpc.encoder import WiFiSpecCode, EncoderWiFi
+from ldpc.utils import QCFile
 
 # create information bearing bits
-bits = Bits(bytes=bytes(list(range(41))))[:648//2]
+bits = Bits(bytes=bytes(list(range(41))))[:648 // 2]
 # create encoder with frame of 648 bits, and rate 1/2. Possible rates and frame sizes are per the ieee802.11n spec.
 enc = EncoderWiFi(WiFiSpecCode.N648_R12)
 # encode bits

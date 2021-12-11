@@ -1,5 +1,5 @@
 import numpy as np
-from utils import QCFile, InconsistentQCFile
+from ldpc.utils import QCFile, InconsistentQCFile
 import scipy.sparse as sp
 import pytest
 
@@ -7,7 +7,7 @@ import pytest
 class TestQCFile:
     def test_files_io(self) -> None:
         # Uses ieee802.11 file
-        original_file = "./code_specs/ieee802.11/N648_R12.qc"
+        original_file = "ldpc/code_specs/ieee802.11/N648_R12.qc"
         a = QCFile.from_file(original_file)
         assert a.z == 27
         assert a.r == 12
@@ -47,7 +47,7 @@ class TestQCFile:
             QCFile.from_array(arr, z)
 
     def test_verify_elements(self) -> None:
-        original_file = "./code_specs/ieee802.11/N648_R12.qc"
+        original_file = "ldpc/code_specs/ieee802.11/N648_R12.qc"
         a = QCFile.from_file(original_file)
         assert a.verify_elements() is True
         a.block_structure[0][0] = a.z

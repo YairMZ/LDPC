@@ -1,8 +1,8 @@
-from utils import AList
+from ldpc.utils import AList
 
 
 # generate an AList object from a file
-alist = AList.from_file("../code_specs/Mackay_96.3.963.alist")
+alist = AList.from_file("../ldpc/code_specs/Mackay_96.3.963.alist")
 # convert the object to a standard numpy array
 arr = alist.to_array()
 # create an instance from an array

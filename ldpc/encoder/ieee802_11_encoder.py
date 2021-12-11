@@ -1,8 +1,8 @@
 from enum import Enum, auto
-from encoder import Encoder
+from ldpc.encoder import Encoder
 import numpy as np
 from bitstring import Bits
-from utils import IncorrectLength, QCFile
+from ldpc.utils import IncorrectLength, QCFile
 import os
 from numpy.typing import NDArray
 
