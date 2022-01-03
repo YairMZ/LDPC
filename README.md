@@ -37,7 +37,8 @@ simulations.
 import numpy as np
 from bitstring import BitArray, Bits
 from ldpc.decoder import LogSpaDecoder, bsc_llr
-from ldpc.encoder import EncoderWiFi, WiFiSpecCode
+from ldpc.encoder import EncoderWiFi
+from ldpc.wifi_spec_codes import WiFiSpecCode
 from ldpc.utils import QCFile
 
 # create information bearing bits
