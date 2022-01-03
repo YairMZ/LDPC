@@ -1,7 +1,7 @@
 from setuptools import setup
 import pathlib
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).resolve().parent
@@ -12,7 +12,7 @@ README = HERE.joinpath("README.md").read_text()
 setup(
     name='sim-ldpc',
     version=VERSION,
-    packages=['ldpc'],
+    packages=['ldpc', 'ldpc.utils', 'ldpc.encoder', 'ldpc.decoder'],
     url='https://github.com/YairMZ/LDPC',
     license='MIT',
     author='Yair Mazal',

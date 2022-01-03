@@ -1,10 +1,10 @@
 from __future__ import annotations
 import networkx as nx
-from .node import VNode, CNode
+from ldpc.decoder.node import VNode, CNode
 import numpy as np
 import numpy.typing as npt
 from typing import Optional, Union
-from .channel_models import ChannelModel
+from ldpc.decoder.channel_models import ChannelModel
 
 
 __all__ = ["TannerGraph"]

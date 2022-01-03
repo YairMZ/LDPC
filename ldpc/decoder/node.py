@@ -5,7 +5,7 @@ from typing import Any, Optional
 from functools import total_ordering
 from abc import ABC, abstractmethod
 import numpy.typing as npt
-from .channel_models import ChannelModel
+from ldpc.decoder.channel_models import ChannelModel
 
 
 __all__ = ["Node", "CNode", "VNode"]

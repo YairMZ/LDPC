@@ -1,10 +1,10 @@
 import bitstring
 
-from ldpc.encoder import Encoder
+from ldpc.encoder.base_encoder import Encoder
 import numpy as np
 import numpy.typing as npt
 from bitstring import Bits
-from ldpc.utils import NonBinaryMatrix, IncorrectLength
+from ldpc.utils.custom_exceptions import NonBinaryMatrix, IncorrectLength
 
 
 class EncoderG(Encoder):
