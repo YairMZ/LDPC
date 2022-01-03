@@ -1,4 +1,3 @@
-from enum import Enum, auto
 from ldpc.encoder.base_encoder import Encoder
 import numpy as np
 from bitstring import Bits
@@ -6,34 +5,19 @@ from ldpc.utils.custom_exceptions import IncorrectLength
 from ldpc.utils.qc_format import QCFile
 import os
 from numpy.typing import NDArray
-
-
-class WiFiSpecCode(Enum):
-    """Enumerate models"""
-    N648_R12 = auto()
-    N648_R23 = auto()
-    N648_R34 = auto()
-    N648_R56 = auto()
-    N1296_R12 = auto()
-    N1296_R23 = auto()
-    N1296_R34 = auto()
-    N1296_R56 = auto()
-    N1944_R12 = auto()
-    N1944_R23 = auto()
-    N1944_R34 = auto()
-    N1944_R56 = auto()
+from ldpc.wifi_spec_codes import WiFiSpecCode
 
 
 class EncoderWiFi(Encoder):
     """Encode messages according to the codes in the IEEE802.11n standard"""
-    spec_base_path: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'code_specs', 'ieee802.11')
+    _spec_base_path: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'code_specs', 'ieee802.11')
 
     def __init__(self, spec: WiFiSpecCode) -> None:
         """
         :param spec: specify which code from the spec we use
         """
         self.spec = spec
-        qc_file = QCFile.from_file(os.path.join(self.spec_base_path, spec.name + ".qc"))
+        qc_file = QCFile.from_file(os.path.join(self._spec_base_path, spec.name + ".qc"))
         self.h = qc_file.to_array()
         self.m, n = self.h.shape
         k = n - self.m

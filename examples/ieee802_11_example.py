@@ -1,7 +1,8 @@
 import numpy as np
 from bitstring import BitArray, Bits
-from ldpc.decoder import LogSpaDecoder, bsc_llr
-from ldpc.encoder import EncoderWiFi, WiFiSpecCode
+from ldpc.decoder import DecoderWiFi, bsc_llr
+from ldpc.encoder import EncoderWiFi
+from ldpc.wifi_spec_codes import WiFiSpecCode
 from ldpc.utils import QCFile
 
 # create information bearing bits
@@ -19,7 +20,7 @@ np.dot(h, np.array(encoded)) % 2  # creates an all zero vector as required.
 # create a decoder which assumes a probability of p=0.05 for bit flips by the channel
 # allow up to 20 iterations for the bp decoder.
 p = 0.05
-decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20, info_idx=np.array([True]*324 + [False]*324))
+decoder = DecoderWiFi(bsc_llr(p=p), spec=WiFiSpecCode.N648_R12, max_iter=20, info_idx=np.array([True]*324 + [False]*324))
 
 # create a corrupted version of encoded codeword with error rate p
 corrupted = BitArray(encoded)
