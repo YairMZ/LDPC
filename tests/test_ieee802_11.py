@@ -1,6 +1,7 @@
 import numpy as np
 from bitstring import Bits, BitArray
-from ldpc.encoder import WiFiSpecCode, EncoderWiFi
+from ldpc.encoder import EncoderWiFi
+from ldpc.wifi_spec_codes import WiFiSpecCode
 import pytest
 from ldpc.utils import IncorrectLength, QCFile
 from ldpc.decoder import LogSpaDecoder, bsc_llr, InfoBitsNotSpecified
