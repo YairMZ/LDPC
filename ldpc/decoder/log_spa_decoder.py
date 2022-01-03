@@ -1,12 +1,12 @@
-from .graph import TannerGraph
+from ldpc.decoder.graph import TannerGraph
 from numpy.typing import ArrayLike, NDArray
 import numpy as np
 from collections.abc import Sequence
-from .channel_models import ChannelModel
+from ldpc.decoder.channel_models import ChannelModel
 from typing import Optional
 from bitstring import Bits
 from ldpc.utils import IncorrectLength
-from .node import VNode
+from ldpc.decoder.node import VNode
 
 __all__ = ["LogSpaDecoder", "InfoBitsNotSpecified"]
 

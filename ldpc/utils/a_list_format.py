@@ -6,7 +6,7 @@ from typing import Callable
 import numpy as np
 import numpy.typing as npt
 from dataclasses import dataclass
-from ldpc import CodeStructure
+from ldpc.base_code import CodeStructure
 import scipy.sparse as sp
 
 

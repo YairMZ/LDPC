@@ -1,0 +1,1 @@
+recursive-include ldpc/code_specs/ *.alist *.qc

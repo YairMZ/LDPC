@@ -1,2 +1,2 @@
-from .base_code import CodeStructure
+from ldpc.base_code import CodeStructure
 __all__: list[str] = ["CodeStructure"]
