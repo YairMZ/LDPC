@@ -16,7 +16,8 @@ Add example
 ```python
 import numpy as np
 from bitstring import Bits
-from ldpc.encoder import WiFiSpecCode, EncoderWiFi
+from ldpc.encoder import EncoderWiFi
+from ldpc.wifi_spec_codes import WiFiSpecCode
 from ldpc.utils import QCFile
 
 # create information bearing bits
