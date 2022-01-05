@@ -91,7 +91,7 @@ class AList:
                    non_zero_elements_in_column, non_zero_elements_in_row)
 
     def to_array(self) -> npt.NDArray[np.int_]:
-        arr = np.zeros((self.m, self.n))
+        arr: npt.NDArray[np.int_] = np.zeros((self.m, self.n), dtype=np.int_)
         if not self.verify_elements():
             raise InconsistentAList("inconsistent A list")
         for idx, row in enumerate(self.non_zero_elements_in_row):
