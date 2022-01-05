@@ -5,7 +5,7 @@ from typing import Union
 
 
 class Frame:
-    """Frame objects holds binary frames for simulation. Shouldn't be instantiated on is own, use hte manager."""
+    """Frame objects holds binary frames for simulation. Shouldn't be instantiated on its own, use the manager."""
     uid_generator = itertools.count()
 
     def __init__(self, bits: bitstring.Bits) -> None:

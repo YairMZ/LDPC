@@ -72,18 +72,20 @@ class LogSpaDecoder:
         return estimate, llr, not syndrome.any(), iteration
 
     def info_bits(self, estimate: NDArray[np.int_]) -> Bits:
+        """extract information bearing bits from decoded estimate, assuming info bits indices were specified"""
         if self.info_idx is not None:
             return Bits(auto=estimate[self.info_idx])
         else:
             raise InfoBitsNotSpecified("decoder cannot tell info bits")
-    
-    def vnodes(self) -> list[VNode]:
+
+    def ordered_vnodes(self) -> list[VNode]:
+        """getter for ordered graph v-nodes"""
         return self.graph.ordered_v_nodes()
 
     def update_channel_model(self, channel_models: dict[int, ChannelModel]) -> None:
         """
         rectify channel model for specific vnodes
-         
+
         :param channel_models: a dictionary with keys as node uid, and value as a new channel model
         """
         for uid, model in channel_models.items():

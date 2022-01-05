@@ -18,8 +18,7 @@ class QCFile:
     r: int  # number of rows
     z: int  # size identity / zero blocks
 
-    block_structure: list[list[int]]  # each sub-list is a list of integers. Each integer describes a block a either
-
+    block_structure: list[list[int]]  # each sub-list is a list of integers. Each integer describes a block either
     # being an all zero matrix (value of -1), an identity matrix (value of zero), or a right shifted identity matrix
     # (positive value smaller than z).
 

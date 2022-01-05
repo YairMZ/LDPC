@@ -88,7 +88,7 @@ class CNode(Node):
         :param requester_uid: uid of requesting v-node
         """
         def phi(x: npt.NDArray[np.float_]) -> Any:
-            """see sources for definition and reasons fr use of this function"""
+            """see sources for definition and reasons for use of this function"""
             return -np.log(np.tanh(x/2))
         q = np.array([msg for uid, msg in self.received_messages.items() if uid != requester_uid])
         return np.prod(np.sign(q))*phi(np.sum(phi(np.absolute(q))))  # type: ignore
@@ -110,7 +110,7 @@ class VNode(Node):
     def initialize(self, channel_symbol: int) -> None:  # type: ignore
         """
         clear received messages and initialize channel llr with channel bit
-        :param channel_symbol: bit received from channel. currently assumes hard inputs.
+        :param channel_symbol: bit received from channel, currently assumes hard inputs.
         """
         self.channel_symbol = channel_symbol
         self.channel_llr = self.channel_model(channel_symbol)
