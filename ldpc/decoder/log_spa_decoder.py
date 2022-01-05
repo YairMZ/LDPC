@@ -7,6 +7,7 @@ from typing import Optional
 from bitstring import Bits
 from ldpc.utils import IncorrectLength
 from ldpc.decoder.node import VNode
+import numpy.typing as npt
 
 __all__ = ["LogSpaDecoder", "InfoBitsNotSpecified"]
 
@@ -28,7 +29,7 @@ class LogSpaDecoder:
         :param info_idx: a boolean array representing the indices of information bits in the code
         """
         self.info_idx = info_idx
-        self.h = np.array(h)
+        self.h: npt.NDArray[np.int_] = np.array(h)
         self.graph = TannerGraph.from_biadjacency_matrix(h=self.h, channel_model=channel_model)
         self.n = len(self.graph.v_nodes)
         self.max_iter = max_iter
@@ -63,8 +64,8 @@ class LogSpaDecoder:
                 cnode.receive_messages()
 
             # Check stop condition
-            llr = np.array([node.estimate() for node in self.graph.ordered_v_nodes()])
-            estimate = np.array([1 if node_llr < 0 else 0 for node_llr in llr], dtype=np.int_)
+            llr: npt.NDArray[np.float_] = np.array([node.estimate() for node in self.graph.ordered_v_nodes()])
+            estimate: npt.NDArray[np.int_] = np.array([1 if node_llr < 0 else 0 for node_llr in llr], dtype=np.int_)
             syndrome = self.h.dot(estimate) % 2
             if not syndrome.any():
                 break
@@ -72,18 +73,20 @@ class LogSpaDecoder:
         return estimate, llr, not syndrome.any(), iteration
 
     def info_bits(self, estimate: NDArray[np.int_]) -> Bits:
+        """extract information bearing bits from decoded estimate, assuming info bits indices were specified"""
         if self.info_idx is not None:
             return Bits(auto=estimate[self.info_idx])
         else:
             raise InfoBitsNotSpecified("decoder cannot tell info bits")
-    
-    def vnodes(self) -> list[VNode]:
+
+    def ordered_vnodes(self) -> list[VNode]:
+        """getter for ordered graph v-nodes"""
         return self.graph.ordered_v_nodes()
 
     def update_channel_model(self, channel_models: dict[int, ChannelModel]) -> None:
         """
         rectify channel model for specific vnodes
-         
+
         :param channel_models: a dictionary with keys as node uid, and value as a new channel model
         """
         for uid, model in channel_models.items():

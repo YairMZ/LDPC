@@ -3,6 +3,7 @@ import pytest
 from ldpc.utils import NonBinaryMatrix, AList, IncorrectLength
 import numpy as np
 from bitstring import Bits
+import numpy.typing as npt
 
 
 class TestEncoderG:
@@ -16,12 +17,12 @@ class TestEncoderG:
         enc = EncoderG(g)
         assert enc.n == 7
         assert enc.k == 4
-        np.testing.assert_array_equal(g, enc.generator)  # type: ignore
+        np.testing.assert_array_equal(g, enc.generator)
 
     def test_encoding(self) -> None:
         g = AList.from_file("tests/test_data/Hamming_7_4_g.alist").to_array()
         enc = EncoderG(g)
-        bits = np.array([1, 1, 0, 1])
+        bits: npt.NDArray[np.int_] = np.array([1, 1, 0, 1])
         encoded = np.matmul(bits, g)
         res = enc.encode(Bits(bits))
         assert res == Bits(encoded)
@@ -29,6 +30,6 @@ class TestEncoderG:
     def test_incorrect_length(self) -> None:
         g = AList.from_file("tests/test_data/Hamming_7_4_g.alist").to_array()
         enc = EncoderG(g)
-        bits = np.array([1, 1, 0])
+        bits: npt.NDArray[np.int_] = np.array([1, 1, 0])
         with pytest.raises(IncorrectLength):
             enc.encode(Bits(bits))

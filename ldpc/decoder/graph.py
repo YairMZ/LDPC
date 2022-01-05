@@ -96,6 +96,8 @@ class TannerGraph:
     @classmethod
     def from_biadjacency_matrix(cls, h: npt.ArrayLike, channel_model: ChannelModel) -> TannerGraph:
         """
+        Creates a Tanner Graph from a biadjacency matrix, nodes are ordered according to matrix indices.
+
         :param channel_model: channel model to compute channel symbols llr within v nodes
         :param h: parity check matrix, shape MXN with M check nodes and N variable nodes. assumed binary matrix.
         """

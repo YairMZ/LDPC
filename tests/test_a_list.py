@@ -1,6 +1,8 @@
 import numpy as np
 from ldpc.utils import AList
 import scipy.sparse as sp
+import numpy.typing as npt
+from typing import Any
 
 
 class TestAList:
@@ -27,7 +29,7 @@ class TestAList:
                         [0,0,1]
                         [0,1,1]]
         """
-        arr = np.array([[1, 1, 1], [1, 1, 0], [0, 0, 1], [0, 1, 1]])
+        arr: npt.NDArray[np.int_] = np.array([[1, 1, 1], [1, 1, 0], [0, 0, 1], [0, 1, 1]], dtype=np.int_)
         a = AList.from_array(arr)
         assert arr.shape == (a.m, a.n)
         assert a.largest_row_weight == 3
@@ -42,7 +44,7 @@ class TestAList:
                                                  [0, 1, 3],
                                                  [0, 2, 3]]
         b = a.to_array()
-        np.testing.assert_array_equal(arr, b)  # type: ignore
+        np.testing.assert_array_equal(arr, b)
 
     def test_verify_alist(self) -> None:
         original_file = "ldpc/code_specs/Mackay_96.3.963.alist"
@@ -55,7 +57,7 @@ class TestAList:
                         [0,0,1]
                         [0,1,1]]
         """
-        arr = np.array([[1, 1, 1], [1, 1, 0], [0, 0, 1], [0, 1, 1]])
+        arr: Any = np.array([[1, 1, 1], [1, 1, 0], [0, 0, 1], [0, 1, 1]])
         arr = sp.lil_matrix(arr)
         a = AList.from_sparse(arr)
         assert arr.shape == (a.m, a.n)

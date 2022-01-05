@@ -2,6 +2,8 @@ import numpy as np
 from ldpc.utils import QCFile, InconsistentQCFile
 import scipy.sparse as sp
 import pytest
+import numpy.typing as npt
+from typing import Any
 
 
 class TestQCFile:
@@ -24,18 +26,18 @@ class TestQCFile:
         z=10
         """
         z = 10
-        arr = np.block([[np.eye(z), np.eye(z, k=1) + np.eye(z, k=-z+1)],
-                        [np.eye(z, k=2) + np.eye(z, k=-z+2), np.zeros((z, z))]])
+        arr: npt.NDArray[np.int_] = np.block([[np.eye(z), np.eye(z, k=1) + np.eye(z, k=-z+1)],
+                                              [np.eye(z, k=2) + np.eye(z, k=-z+2), np.zeros((z, z))]])
         a = QCFile.from_array(arr, z)
         assert arr.shape == (a.z*a.r, a.z*a.c)
         assert a.block_structure == [[0, 1], [2, -1]]
         b = a.to_array()
-        np.testing.assert_array_equal(arr, b)  # type: ignore
+        np.testing.assert_array_equal(arr, b)
 
     def test_bad_array(self) -> None:
         z = 10
-        arr = np.block([[np.eye(z), np.eye(z, k=1) + np.eye(z, k=-z + 1)],
-                        [np.eye(z, k=2) + np.eye(z, k=-z + 2), np.zeros((z, z))]])
+        arr: npt.NDArray[np.int_] = np.block([[np.eye(z), np.eye(z, k=1) + np.eye(z, k=-z + 1)],
+                                              [np.eye(z, k=2) + np.eye(z, k=-z + 2), np.zeros((z, z))]])
         a = arr[:, :-1]
         with pytest.raises(ValueError):
             QCFile.from_array(a, z)
@@ -58,8 +60,8 @@ class TestQCFile:
         z=10
         """
         z = 10
-        arr = np.block([[np.eye(z), np.eye(z, k=1) + np.eye(z, k=-z+1)],
-                        [np.eye(z, k=2) + np.eye(z, k=-z+2), np.zeros((z, z))]])
+        arr: Any = np.block([[np.eye(z), np.eye(z, k=1) + np.eye(z, k=-z+1)],
+                             [np.eye(z, k=2) + np.eye(z, k=-z+2), np.zeros((z, z))]])
         a = QCFile.from_array(arr, z)
         arr = sp.lil_matrix(arr)
         b = a.to_sparse()
