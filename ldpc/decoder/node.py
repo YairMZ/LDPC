@@ -25,7 +25,7 @@ class Node(ABC):
         :param name: name of node
         """
         self.uid = next(Node._uid_generator)
-        self.name = name if name else str(self.uid)
+        self.name = name or str(self.uid)
         self.ordering_key = ordering_key if ordering_key is not None else self.uid
         self.neighbors: dict[int, Node] = {}  # keys as senders uid
         self.received_messages: dict[int, Any] = {}  # keys as senders uid, values as messages
