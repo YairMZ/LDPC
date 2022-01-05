@@ -37,7 +37,7 @@ class TestQCFile:
     def test_bad_array(self) -> None:
         z = 10
         arr: npt.NDArray[np.int_] = np.block([[np.eye(z), np.eye(z, k=1) + np.eye(z, k=-z + 1)],
-                        [np.eye(z, k=2) + np.eye(z, k=-z + 2), np.zeros((z, z))]])
+                                              [np.eye(z, k=2) + np.eye(z, k=-z + 2), np.zeros((z, z))]])
         a = arr[:, :-1]
         with pytest.raises(ValueError):
             QCFile.from_array(a, z)
@@ -61,7 +61,7 @@ class TestQCFile:
         """
         z = 10
         arr: Any = np.block([[np.eye(z), np.eye(z, k=1) + np.eye(z, k=-z+1)],
-                        [np.eye(z, k=2) + np.eye(z, k=-z+2), np.zeros((z, z))]])
+                             [np.eye(z, k=2) + np.eye(z, k=-z+2), np.zeros((z, z))]])
         a = QCFile.from_array(arr, z)
         arr = sp.lil_matrix(arr)
         b = a.to_sparse()
