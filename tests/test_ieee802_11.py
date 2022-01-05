@@ -4,7 +4,7 @@ from ldpc.encoder import EncoderWiFi
 from ldpc.wifi_spec_codes import WiFiSpecCode
 import pytest
 from ldpc.utils import IncorrectLength, QCFile
-from ldpc.decoder import LogSpaDecoder, bsc_llr, InfoBitsNotSpecified
+from ldpc.decoder import LogSpaDecoder, bsc_llr, InfoBitsNotSpecified, DecoderWiFi
 
 
 class TestEncoder802_11:
@@ -90,8 +90,7 @@ class TestDecoder802_11:
         for idx in error_idx:
             corrupted[idx] = not corrupted[idx]
 
-        h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
-        decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20, info_idx=np.array([True]*324 + [False]*324))
+        decoder = DecoderWiFi(bsc_llr(p=p), spec=WiFiSpecCode.N648_R12, max_iter=20)
         decoded = Bits()
         decoded_info = Bits()
         for frame_idx in range(len(corrupted) // decoder.n):

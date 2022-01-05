@@ -11,10 +11,8 @@ The module implements decoders for LDPC codes. Currently implemented:
 ```python
 import numpy as np
 from bitstring import Bits, BitArray
-from ldpc.encoder import WiFiSpecCode, EncoderWiFi
-import pytest
-from ldpc.utils import IncorrectLength, QCFile
-from ldpc.decoder import LogSpaDecoder, bsc_llr, InfoBitsNotSpecified
+from ldpc.utils import QCFile
+from ldpc.decoder import LogSpaDecoder, bsc_llr
 
 info_bits = Bits(auto=np.genfromtxt(
     'tests/test_data/ieee_802_11/info_bits_N648_R12.csv', delimiter=',', dtype=np.int_))
