@@ -34,11 +34,13 @@ class LogSpaDecoder:
         self.n = len(self.graph.v_nodes)
         self.max_iter = max_iter
 
-    def decode(self, channel_word: Sequence[int]) -> tuple[NDArray[np.int_], NDArray[np.float_], bool, int]:
+    def decode(self, channel_word: Sequence[int], max_iter: Optional[int] = None) \
+            -> tuple[NDArray[np.int_], NDArray[np.float_], bool, int]:
         """
         decode a sequence received from the channel
 
         :param channel_word: a sequence of n bit samples from the channel
+        :param max_iter: maximal iterations of decoder. If None, self.max_iter is used as default.
         :return: return a tuple (estimated_bits, llr, decode_success, no_iterations)
         where:
             - estimated_bits is a 1-d np array of hard bit estimates
@@ -55,7 +57,9 @@ class LogSpaDecoder:
         for cnode in self.graph.c_nodes.values():  # send initial channel based messages to check nodes
             cnode.receive_messages()
 
-        for iteration in range(self.max_iter):
+        if max_iter is None:
+            max_iter = self.max_iter
+        for iteration in range(max_iter):
             # Check to Variable Node Step(horizontal step):
             for vnode in self.graph.v_nodes.values():
                 vnode.receive_messages()
