@@ -1,12 +1,13 @@
 import numpy as np
-from typing import Callable
+from typing import Callable, Union
+from collections.abc import Sequence
 
 __all__ = ["ChannelModel", "bsc_llr"]
 
-ChannelModel = Callable[[int], np.float_]
+ChannelModel = Callable[[Union[int, Sequence[int]]], Union[np.float_, Sequence[np.float_]]]
 
 
-def bsc_llr(p: float) -> ChannelModel:
+def bsc_llr(p: Union[float, Sequence[float]]) -> ChannelModel:
     """
     bsc llr is defined as:
         L(c_i) = log(Pr(c_i=0| y_i) / Pr(c_i=1| y_i)) = (-1)^y log((1-p)/p)
