@@ -50,7 +50,7 @@ enc = EncoderWiFi(WiFiSpecCode.N648_R12)
 encoded = enc.encode(info_bits)
 
 # verify validity of codeword
-h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
+h = enc.h
 np.dot(h, np.array(encoded)) % 2  # creates an all zero vector as required.
 
 # create a decoder which assumes a probability of p=0.05 for bit flips by the channel
@@ -68,8 +68,24 @@ decoded, llr, decode_success, num_of_iterations = decoder.decode(corrupted)
 # Verify correct decoding
 print(Bits(decoded) == encoded)  # true
 info = decoder.info_bits(decoded)
-
 ```
+The example is also included as a jupyter notebook. Note however, that you need to launch the notebook from the correct 
+path for it to be able to access installed packages. To run the notebook:
+1. create a new virtualenv
+```shell
+python3 -m venv ~/.virtualenv/LDPC_env
+```
+2. activate it and install `sim-ldpc`, and `notebook`:
+```shell
+source ~/.virtualenv/LDPC_env/bin/activate
+pip install sim-ldpc
+pip install notebook
+```
+3. run jupyter from within the virtual env for it to have access to all requirements:
+```shell
+~/.virtualenv/LDPC_env/bin/jupyter-notebook
+```
+5. run the notebook
 __________
 ## Sources
  - Cai Z., Hao J., Tan P.H., Sun S., Chin P.S., Efficient encoding of IEEE 802.11n LDPC codes. Electronics Letters 25, 
