@@ -23,6 +23,11 @@ python -m pytest  -n auto --cov-report=html
 ```
 to run tests in parallel (with number of CPU's dictated by machine) to speed up tests.
 
+Verify static typing with
+```shell
+mypy --strict --config-file .mypy.ini .
+```
+
 -----
 ## Included modules
  - [Utilities](ldpc/utils/README.md): implementing various utility operations to assist with encoding, decoding and 
