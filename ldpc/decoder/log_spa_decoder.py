@@ -19,14 +19,15 @@ class InfoBitsNotSpecified(Exception):
 
 class LogSpaDecoder:
     """Decode codewords according to Log-SPA version of the belief propagation algorithm"""
-    def __init__(self, channel_model: ChannelModel, h: ArrayLike, max_iter: int,
-                 info_idx: Optional[NDArray[np.bool_]] = None):
+    def __init__(self, h: ArrayLike, max_iter: int, info_idx: Optional[NDArray[np.bool_]] = None,
+                 channel_model: Optional[ChannelModel] = None):
         """
 
-        :param channel_model: a callable which receives a channel input, and returns the channel llr
         :param h:the parity check code matrix of the code
         :param max_iter: The maximal number of iterations for belief propagation algorithm
         :param info_idx: a boolean array representing the indices of information bits in the code
+        :param channel_model: optional, a callable which receives a channel input, and returns the channel llr. If not
+        specified, llr is expected to be fed into the decoder.
         """
         self.info_idx = info_idx
         self.h: npt.NDArray[np.int_] = np.array(h)
@@ -34,7 +35,7 @@ class LogSpaDecoder:
         self.n = len(self.graph.v_nodes)
         self.max_iter = max_iter
 
-    def decode(self, channel_word: Sequence[int], max_iter: Optional[int] = None) \
+    def decode(self, channel_word: Sequence[np.float_], max_iter: Optional[int] = None) \
             -> tuple[NDArray[np.int_], NDArray[np.float_], bool, int]:
         """
         decode a sequence received from the channel
@@ -69,7 +70,8 @@ class LogSpaDecoder:
 
             # Check stop condition
             llr: npt.NDArray[np.float_] = np.array([node.estimate() for node in self.graph.ordered_v_nodes()])
-            estimate: npt.NDArray[np.int_] = np.array([1 if node_llr < 0 else 0 for node_llr in llr], dtype=np.int_)
+            estimate: npt.NDArray[np.int_] = np.array(llr < 0, dtype=np.int_)
+            # np.array([1 if node_llr < 0 else 0 for node_llr in llr], dtype=np.int_)
             syndrome = self.h.dot(estimate) % 2
             if not syndrome.any():
                 break

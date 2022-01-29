@@ -25,7 +25,7 @@ class Node(ABC):
         :param name: name of node
         """
         self.uid = next(Node._uid_generator)
-        self.name = name if name else str(self.uid)
+        self.name = name or str(self.uid)
         self.ordering_key = ordering_key if ordering_key is not None else self.uid
         self.neighbors: dict[int, Node] = {}  # keys as senders uid
         self.received_messages: dict[int, Any] = {}  # keys as senders uid, values as messages
@@ -34,10 +34,7 @@ class Node(ABC):
         self.neighbors[neighbor.uid] = neighbor
 
     def __str__(self) -> str:
-        if self.name:
-            return self.name
-        else:
-            return str(self.uid)
+        return self.name or str(self.uid)
 
     def get_neighbors(self) -> list[int]:
         """
@@ -91,29 +88,32 @@ class CNode(Node):
             """see sources for definition and reasons for use of this function"""
             return -np.log(np.tanh(x/2))
         q: npt.NDArray[np.float_] = np.array([msg for uid, msg in self.received_messages.items() if uid != requester_uid])
-        return np.prod(np.sign(q))*phi(np.sum(phi(np.absolute(q))))  # type: ignore
+        return np.prod(np.sign(q))*phi(np.sum(phi(np.absolute(q))))
 
 
 class VNode(Node):
     """Variable nodes in Tanner graph"""
-    def __init__(self, channel_model: ChannelModel, ordering_key: int, name: str = ""):
+    def __init__(self, ordering_key: int, name: str = "", channel_model: Optional[ChannelModel] = None):
         """
         :param channel_model: a function which receives channel outputs anr returns relevant message
         :param ordering_key: used to order nodes per their order in the parity check matrix
         :param name: optional name of node
         """
-        self.channel_model: ChannelModel = channel_model
-        self.channel_symbol: int = None  # type: ignore # currently assuming hard channel symbols
+        self.channel_model: Optional[ChannelModel] = channel_model
+        self.channel_symbol: np.float_ = None  # type: ignore
         self.channel_llr: np.float_ = None  # type: ignore
         super().__init__(name, ordering_key)
 
-    def initialize(self, channel_symbol: int) -> None:  # type: ignore
+    def initialize(self, channel_symbol: np.float_) -> None:  # type: ignore
         """
         clear received messages and initialize channel llr with channel bit
         :param channel_symbol: bit received from channel, currently assumes hard inputs.
         """
         self.channel_symbol = channel_symbol
-        self.channel_llr = self.channel_model(channel_symbol)
+        if self.channel_model is not None:
+            self.channel_llr = self.channel_model(channel_symbol)
+        else:
+            self.channel_llr = channel_symbol
         self.received_messages = {node_uid: 0 for node_uid in self.neighbors}
 
     def message(self, requester_uid: int) -> np.float_:
@@ -121,10 +121,10 @@ class VNode(Node):
         pass messages from v-nodes to c-nodes
         :param requester_uid: uid of requesting c-node
         """
-        return self.channel_llr + np.sum(  # type: ignore
+        return self.channel_llr + np.sum(
             [msg for uid, msg in self.received_messages.items() if uid != requester_uid]
         )
 
     def estimate(self) -> np.float_:
         """provide a soft bit estimate"""
-        return self.channel_llr + np.sum(list(self.received_messages.values()))  # type: ignore
+        return self.channel_llr + np.sum(list(self.received_messages.values()))

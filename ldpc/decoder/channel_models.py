@@ -3,7 +3,7 @@ from typing import Callable
 
 __all__ = ["ChannelModel", "bsc_llr"]
 
-ChannelModel = Callable[[int], np.float_]
+ChannelModel = Callable[[np.float_], np.float_]
 
 
 def bsc_llr(p: float) -> ChannelModel:
@@ -13,7 +13,7 @@ def bsc_llr(p: float) -> ChannelModel:
     :param float p: the llr is parameterized by the bit flip probability of the channel p.
     :returns: return a callable which accepts a single argument - y_i (a bit from the channel), and returns its llr
     """
-    return lambda y: np.power(-1, y) * np.log((1-p)/p)  # type: ignore
+    return lambda y: np.power(-1, y) * np.log((1-p)/p)
 
 # Simply add more channel models by writing a function which receives a channel symbol as input and returns an LLR as
 # output

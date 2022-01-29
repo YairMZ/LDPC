@@ -20,13 +20,13 @@ class TannerGraph:
         self.c_nodes: dict[int, CNode] = {}
         self.edges: EdgesSet = set()
 
-    def add_v_node(self, channel_model: ChannelModel, ordering_key: int, name: str = "") -> VNode:
+    def add_v_node(self, ordering_key: int, name: str = "", channel_model: Optional[ChannelModel] = None) -> VNode:
         """
         :param ordering_key: should reflect order according to parity check matrix, channel symbols in order
         :param name: name of node.
-        :param channel_model: add an exiting node to graph. If not used a new node is created.
+        :param channel_model: optional channel model to compute llr out of hard channel outputs. Of not used llr are expected.
         """
-        node = VNode(channel_model, ordering_key, name)
+        node = VNode(ordering_key, name=name, channel_model=channel_model)
         self.v_nodes[node.uid] = node
         return node
 
@@ -94,7 +94,7 @@ class TannerGraph:
         return g
 
     @classmethod
-    def from_biadjacency_matrix(cls, h: npt.ArrayLike, channel_model: ChannelModel) -> TannerGraph:
+    def from_biadjacency_matrix(cls, h: npt.ArrayLike, channel_model: Optional[ChannelModel] = None) -> TannerGraph:
         """
         Creates a Tanner Graph from a biadjacency matrix, nodes are ordered according to matrix indices.
 
