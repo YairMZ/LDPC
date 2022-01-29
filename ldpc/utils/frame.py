@@ -22,7 +22,7 @@ class Frame:
         """Only bits are compared not uid"""
         if not isinstance(other, Frame):
             raise NotImplementedError
-        return self.bits == other.bits
+        return self.bits == other.bits  # type: ignore
 
 
 class FramesManager:

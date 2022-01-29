@@ -88,7 +88,7 @@ class CNode(Node):
             """see sources for definition and reasons for use of this function"""
             return -np.log(np.tanh(x/2))
         q: npt.NDArray[np.float_] = np.array([msg for uid, msg in self.received_messages.items() if uid != requester_uid])
-        return np.prod(np.sign(q))*phi(np.sum(phi(np.absolute(q))))
+        return np.prod(np.sign(q))*phi(np.sum(phi(np.absolute(q))))  # type: ignore
 
 
 class VNode(Node):
@@ -121,10 +121,10 @@ class VNode(Node):
         pass messages from v-nodes to c-nodes
         :param requester_uid: uid of requesting c-node
         """
-        return self.channel_llr + np.sum(
+        return self.channel_llr + np.sum(  # type: ignore
             [msg for uid, msg in self.received_messages.items() if uid != requester_uid]
         )
 
     def estimate(self) -> np.float_:
         """provide a soft bit estimate"""
-        return self.channel_llr + np.sum(list(self.received_messages.values()))
+        return self.channel_llr + np.sum(list(self.received_messages.values()), dtype=np.float_)  # type: ignore
