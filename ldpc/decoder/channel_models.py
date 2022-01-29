@@ -3,7 +3,7 @@ from typing import Callable
 
 __all__ = ["ChannelModel", "bsc_llr"]
 
-ChannelModel = Callable[[int], np.float_]
+ChannelModel = Callable[[np.float_], np.float_]
 
 
 def bsc_llr(p: float) -> ChannelModel:

@@ -72,7 +72,7 @@ class TestDecoder802_11:
     def test_incorrect_length(self) -> None:
         p = 0.1
         h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
-        decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20)
+        decoder = LogSpaDecoder(h=h, max_iter=20, channel_model=bsc_llr(p=p))
         bits: npt.NDArray[np.int_] = np.array([1, 1, 0], dtype=np.int_)
         with pytest.raises(IncorrectLength):
             decoder.decode(bits)  # type: ignore
@@ -91,7 +91,7 @@ class TestDecoder802_11:
         for idx in error_idx:
             corrupted[idx] = not corrupted[idx]
 
-        decoder = DecoderWiFi(bsc_llr(p=p), spec=WiFiSpecCode.N648_R12, max_iter=20)
+        decoder = DecoderWiFi(spec=WiFiSpecCode.N648_R12, max_iter=20, channel_model=bsc_llr(p=p))
         decoded = Bits()
         decoded_info = Bits()
         for frame_idx in range(len(corrupted) // decoder.n):
@@ -105,7 +105,7 @@ class TestDecoder802_11:
     def test_decoder_no_info(self) -> None:
         p = 0.1
         h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
-        decoder = LogSpaDecoder(bsc_llr(p=p), h=h, max_iter=20)
+        decoder = LogSpaDecoder(h=h, max_iter=20, channel_model=bsc_llr(p=p))
         estimate: npt.NDArray[np.int_] = np.array(Bits(bytes=bytes(list(range(81)))), np.int_)
         with pytest.raises(InfoBitsNotSpecified):
             decoder.info_bits(estimate)
