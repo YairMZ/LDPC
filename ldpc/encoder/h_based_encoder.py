@@ -20,6 +20,9 @@ class EncoderTriangularH(Encoder):
         m, n = h.shape
         k = n - m
         self.m = m
+        # check if parity part is identity
+        self.identity_p = np.array_equal(h[:, k:], np.identity(m))
+
         super().__init__(k, n)
 
     def encode(self, information_bits: Bits) -> Bits:
@@ -29,8 +32,8 @@ class EncoderTriangularH(Encoder):
         encoded: npt.NDArray[np.int_] = np.zeros(self.n, dtype=np.int_)
         encoded[:self.k] = info
         p: npt.NDArray[np.int_] = np.mod(np.matmul(self.h[:, :self.k], info), 2)
-        for l in range(self.m):
-            for j in range(l):
-                p[l] = (p[l] + self.h[l, j + self.k] * p[j]) % 2
+        if not self.identity_p:
+            for l in range(1, self.m):
+                p[l] += np.mod(np.dot(self.h[l, self.k:self.k+l], p[:l]), 2)
         encoded[self.k:] = p
         return Bits(encoded)
