@@ -105,17 +105,16 @@ class TannerGraph:
         h = np.array(h)
         m, n = h.shape
         for i in range(n):
-            g.add_v_node(name="v" + str(i), channel_model=channel_model, ordering_key=i)
+            g.add_v_node(name=f"v{i}", channel_model=channel_model, ordering_key=i)
         for j in range(m):
-            g.add_c_node(name="c" + str(j), ordering_key=j)
+            g.add_c_node(name=f"c{j}", ordering_key=j)
             for i in range(n):
                 if h[j, i] == 1:
-                    g.add_edges_by_name({("v" + str(i), "c" + str(j))})
+                    g.add_edges_by_name({(f"v{i}", f"c{j}")})
         return g
 
     def __str__(self) -> str:
-        return "Graph with " + str(len(self.c_nodes) + len(self.v_nodes)) + " nodes and " + str(len(self.edges)) + \
-               " edges"
+        return f"Graph with {len(self.c_nodes) + len(self.v_nodes)} nodes and {len(self.edges)} edges"
 
     def ordered_v_nodes(self) -> list[VNode]:
         """return vnodes of graph as a list of nodes ordered by the ordering key defined for the nodes"""

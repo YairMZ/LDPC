@@ -69,7 +69,7 @@ no_errors = int(len(corrupted)*p)
 error_idx = rng.choice(len(corrupted), size=no_errors, replace=False)
 for idx in error_idx:
     corrupted[idx] = not corrupted[idx]
-decoded, llr, decode_success, num_of_iterations = decoder.decode(corrupted)
+decoded, llr, decode_success, num_of_iterations, syndrome, vnode_validity  = decoder.decode(corrupted)
 # Verify correct decoding
 print(Bits(decoded) == encoded)  # true
 info = decoder.info_bits(decoded)
@@ -79,7 +79,7 @@ info = decoder.info_bits(decoded)
 channel = bsc_llr(p=p)
 channel_llr = channel(np.array(corrupted, dtype=np.int_))
 decoder = DecoderWiFi(spec=WiFiSpecCode.N648_R12, max_iter=20)
-decoded, llr2, decode_success, num_of_iterations = decoder.decode(channel_llr)
+decoded, llr2, decode_success, num_of_iterations, syndrome, vnode_validity  = decoder.decode(channel_llr)
 print(Bits(decoded) == encoded)  # true
 info = decoder.info_bits(decoded)
 ```
