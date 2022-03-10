@@ -34,9 +34,11 @@ class LogSpaDecoder:
         self.graph = TannerGraph.from_biadjacency_matrix(h=self.h, channel_model=channel_model)
         self.n = len(self.graph.v_nodes)
         self.max_iter = max_iter
+        ordered_cnodes = sorted(self.graph.c_nodes.values())
+        self.ordered_cnodes_uids = [node.uid for node in ordered_cnodes]
 
     def decode(self, channel_word: Sequence[np.float_], max_iter: Optional[int] = None) \
-            -> tuple[NDArray[np.int_], NDArray[np.float_], bool, int]:
+            -> tuple[NDArray[np.int_], NDArray[np.float_], bool, int, NDArray[np.int_], NDArray[np.int_]]:
         """
         decode a sequence received from the channel
 
@@ -48,6 +50,8 @@ class LogSpaDecoder:
             - llr is a 1-d np array of soft bit estimates
             - decode_success is a boolean flag stating of the estimated_bits form a valid  code word
             - no_iterations is the number of iterations of belief propagation before exiting the loop
+            - syndrome
+            - a measure of validity of each vnode, higher is better
         """
         if len(channel_word) != self.n:
             raise IncorrectLength("incorrect block size")
@@ -71,12 +75,19 @@ class LogSpaDecoder:
             # Check stop condition
             llr: npt.NDArray[np.float_] = np.array([node.estimate() for node in self.graph.ordered_v_nodes()])
             estimate: npt.NDArray[np.int_] = np.array(llr < 0, dtype=np.int_)
-            # np.array([1 if node_llr < 0 else 0 for node_llr in llr], dtype=np.int_)
             syndrome = self.h.dot(estimate) % 2
             if not syndrome.any():
                 break
 
-        return estimate, llr, not syndrome.any(), iteration
+        # for each vnode how many equations are fulfilled
+        vnode_validity: npt.NDArray[np.int_] = np.array([0] * self.n, dtype=np.int_)  #
+        syndrome_compliance = {cnode: int(val == 0) for cnode, val in zip(self.ordered_cnodes_uids, syndrome)}
+
+        for idx, vnode in enumerate(self.ordered_vnodes()):
+            neighbors = vnode.get_neighbors()
+            for neighbor in neighbors:
+                vnode_validity[idx] += 2*syndrome_compliance[neighbor] - 1
+        return estimate, llr, not syndrome.any(), iteration+1, syndrome, vnode_validity
 
     def info_bits(self, estimate: NDArray[np.int_]) -> Bits:
         """extract information bearing bits from decoded estimate, assuming info bits indices were specified"""
