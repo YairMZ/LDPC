@@ -55,9 +55,9 @@ class TannerGraph:
         """
         for v_uid, c_uid in edges_set:
             if v_uid not in self.v_nodes:
-                raise ValueError("No v-node with uid " + str(v_uid) + " in graph")
+                raise ValueError(f"No v-node with uid {str(v_uid)} in graph")
             if c_uid not in self.c_nodes:
-                raise ValueError("No c-node with uid " + str(c_uid) + " in graph")
+                raise ValueError(f"No c-node with uid {str(c_uid)} in graph")
             self.add_edge(v_uid, c_uid)
 
     def add_edges_by_name(self, edges_set: set[tuple[str, str]]) -> None:
@@ -68,10 +68,10 @@ class TannerGraph:
         for v_name, c_name in edges_set:
             v_uid = [node.uid for node in self.v_nodes.values() if node.name == v_name]
             if not v_uid:
-                raise ValueError("No v-node with name " + v_name + " in graph")
+                raise ValueError(f"No v-node with name {v_name} in graph")
             c_uid = [node.uid for node in self.c_nodes.values() if node.name == c_name]
             if not c_uid:
-                raise ValueError("No c-node with name " + c_name + " in graph")
+                raise ValueError(f"No c-node with name {c_name} in graph")
             self.add_edge(v_uid[0], c_uid[0])
 
     def get_edges(self, by_name: bool = False) -> Union[set[tuple[str, str]], EdgesSet]:
@@ -79,9 +79,14 @@ class TannerGraph:
         :param by_name: if true nodes are referred to by name, otherwise by uid. Default to false
         :return: returns a set of edges. if by_name each element is a tuple of node names, else it is a tuple of uid.
         """
-        if not by_name:
-            return self.edges
-        return {(self.v_nodes.get(vn).name, self.c_nodes.get(cn).name) for vn, cn in self.edges}  # type: ignore
+        return (
+            {
+                (self.v_nodes.get(vn).name, self.c_nodes.get(cn).name)
+                for vn, cn in self.edges
+            }
+            if by_name
+            else self.edges
+        )
 
     def to_nx(self) -> nx.Graph:
         """Transform a TannerGraph object into an networkx.Graph object"""
