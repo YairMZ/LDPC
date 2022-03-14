@@ -36,6 +36,7 @@ class LogSpaDecoder:
         self.max_iter = max_iter
         ordered_cnodes = sorted(self.graph.c_nodes.values())
         self.ordered_cnodes_uids = [node.uid for node in ordered_cnodes]
+        self._ordered_vnodes = self.graph.ordered_v_nodes()
 
     def decode(self, channel_word: Sequence[np.float_], max_iter: Optional[int] = None) \
             -> tuple[NDArray[np.int_], NDArray[np.float_], bool, int, NDArray[np.int_], NDArray[np.int_]]:
@@ -57,7 +58,7 @@ class LogSpaDecoder:
             raise IncorrectLength("incorrect block size")
 
         # initial step
-        for idx, vnode in enumerate(self.graph.ordered_v_nodes()):
+        for idx, vnode in enumerate(self._ordered_vnodes):
             vnode.initialize(channel_word[idx])
         for cnode in self.graph.c_nodes.values():  # send initial channel based messages to check nodes
             cnode.receive_messages()
@@ -73,17 +74,17 @@ class LogSpaDecoder:
                 cnode.receive_messages()
 
             # Check stop condition
-            llr: npt.NDArray[np.float_] = np.array([node.estimate() for node in self.graph.ordered_v_nodes()])
+            llr: npt.NDArray[np.float_] = np.array([node.estimate() for node in self._ordered_vnodes], dtype=np.float_)
             estimate: npt.NDArray[np.int_] = np.array(llr < 0, dtype=np.int_)
             syndrome = self.h.dot(estimate) % 2
             if not syndrome.any():
                 break
 
         # for each vnode how many equations are fulfilled
-        vnode_validity: npt.NDArray[np.int_] = np.array([0] * self.n, dtype=np.int_)  #
+        vnode_validity: npt.NDArray[np.int_] = np.zeros(self.n, dtype=np.int_)
         syndrome_compliance = {cnode: int(val == 0) for cnode, val in zip(self.ordered_cnodes_uids, syndrome)}
 
-        for idx, vnode in enumerate(self.ordered_vnodes()):
+        for idx, vnode in enumerate(self._ordered_vnodes):
             neighbors = vnode.get_neighbors()
             for neighbor in neighbors:
                 vnode_validity[idx] += 2*syndrome_compliance[neighbor] - 1
@@ -98,7 +99,7 @@ class LogSpaDecoder:
 
     def ordered_vnodes(self) -> list[VNode]:
         """getter for ordered graph v-nodes"""
-        return self.graph.ordered_v_nodes()
+        return self._ordered_vnodes
 
     def update_channel_model(self, channel_models: dict[int, ChannelModel]) -> None:
         """
