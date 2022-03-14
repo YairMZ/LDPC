@@ -104,13 +104,15 @@ class TannerGraph:
         g = TannerGraph()
         h = np.array(h)
         m, n = h.shape
+        ordered_vnode_uid = [0]*n
         for i in range(n):
-            g.add_v_node(name=f"v{i}", channel_model=channel_model, ordering_key=i)
+            v_uid = g.add_v_node(name=f"v{i}", channel_model=channel_model, ordering_key=i).uid
+            ordered_vnode_uid[i] = v_uid
         for j in range(m):
-            g.add_c_node(name=f"c{j}", ordering_key=j)
+            c_uid = g.add_c_node(name=f"c{j}", ordering_key=j).uid
             for i in range(n):
                 if h[j, i] == 1:
-                    g.add_edges_by_name({(f"v{i}", f"c{j}")})
+                    g.add_edge(ordered_vnode_uid[i], c_uid)
         return g
 
     def __str__(self) -> str:
