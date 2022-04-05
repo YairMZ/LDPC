@@ -86,7 +86,7 @@ class CNode(Node):
         """
         def phi(x: npt.NDArray[np.float_]) -> Any:
             """see sources for definition and reasons for use of this function"""
-            return -np.log(np.tanh(x/2))
+            return -np.log(np.maximum(np.tanh(x/2), 1e3*np.finfo(np.float_).eps))
         q: npt.NDArray[np.float_] = np.array([msg for uid, msg in self.received_messages.items() if uid != requester_uid])
         return np.prod(np.sign(q))*phi(sum(phi(np.absolute(q)+np.finfo(np.float_).eps)))  # type: ignore
 
