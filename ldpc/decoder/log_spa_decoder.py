@@ -20,7 +20,7 @@ class InfoBitsNotSpecified(Exception):
 class LogSpaDecoder:
     """Decode codewords according to Log-SPA version of the belief propagation algorithm"""
     def __init__(self, h: ArrayLike, max_iter: int, info_idx: Optional[NDArray[np.bool_]] = None,
-                 channel_model: Optional[ChannelModel] = None):
+                 channel_model: Optional[ChannelModel] = None, decoder_type: Optional[str] = "BP"):
         """
 
         :param h:the parity check code matrix of the code
@@ -28,10 +28,12 @@ class LogSpaDecoder:
         :param info_idx: a boolean array representing the indices of information bits in the code
         :param channel_model: optional, a callable which receives a channel input, and returns the channel llr. If not
         specified, llr is expected to be fed into the decoder.
+        :param decoder_type: must be either "BP" or "MS" for min-sum decoder
         """
+        self.decoder_type = decoder_type
         self.info_idx = info_idx
         self.h: npt.NDArray[np.int_] = np.array(h)
-        self.graph = TannerGraph.from_biadjacency_matrix(h=self.h, channel_model=channel_model)
+        self.graph = TannerGraph.from_biadjacency_matrix(h=self.h, channel_model=channel_model, decoder=decoder_type)
         self.n = len(self.graph.v_nodes)
         self.max_iter = max_iter
         ordered_cnodes = sorted(self.graph.c_nodes.values())
@@ -80,14 +82,16 @@ class LogSpaDecoder:
             if not syndrome.any():
                 break
 
+        # for each vnode how many equations are failed
+        vnode_validity: npt.NDArray[np.int_] = np.dot(syndrome, self.h)
         # for each vnode how many equations are fulfilled
-        vnode_validity: npt.NDArray[np.int_] = np.zeros(self.n, dtype=np.int_)
-        syndrome_compliance = {cnode: int(val == 0) for cnode, val in zip(self.ordered_cnodes_uids, syndrome)}
-
-        for idx, vnode in enumerate(self._ordered_vnodes):
-            neighbors = vnode.get_neighbors()
-            for neighbor in neighbors:
-                vnode_validity[idx] += 2*syndrome_compliance[neighbor] - 1
+        # vnode_validity: npt.NDArray[np.int_] = np.zeros(self.n, dtype=np.int_)
+        # syndrome_compliance = {cnode: int(val == 0) for cnode, val in zip(self.ordered_cnodes_uids, syndrome)}
+        #
+        # for idx, vnode in enumerate(self._ordered_vnodes):
+        #     neighbors = vnode.get_neighbors()
+        #     for neighbor in neighbors:
+        #         vnode_validity[idx] += 2*syndrome_compliance[neighbor] - 1
         return estimate, llr, not syndrome.any(), iteration+1, syndrome, vnode_validity
 
     def info_bits(self, estimate: NDArray[np.int_]) -> Bits:

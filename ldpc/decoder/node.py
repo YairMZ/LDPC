@@ -73,6 +73,16 @@ class Node(ABC):
 
 class CNode(Node):
     """Check nodes in Tanner graph"""
+
+    def __init__(self, name: str = "", ordering_key: Optional[int] = None,  decoder: Optional[str] = "BP") -> None:
+        """
+        :param ordering_key: used to order nodes per their order in the parity check matrix
+        :param name: optional name of node
+        :param decoder: must be either "BP" or "MS" for min-sum decoder
+        """
+        self.decoder_type = decoder
+        super().__init__(name, ordering_key)
+
     def initialize(self) -> None:
         """
         clear received messages
@@ -84,11 +94,16 @@ class CNode(Node):
         pass messages from c-nodes to v-nodes
         :param requester_uid: uid of requesting v-node
         """
+        q: npt.NDArray[np.float_] = np.array([msg for uid, msg in self.received_messages.items() if uid != requester_uid])
+        if self.decoder_type == "MS":
+            return np.prod(np.sign(q)) * np.absolute(q).min()   # type: ignore
+
+
+        # full BP
         def phi(x: npt.NDArray[np.float_]) -> Any:
             """see sources for definition and reasons for use of this function"""
-            return -np.log(np.tanh(x/2))
-        q: npt.NDArray[np.float_] = np.array([msg for uid, msg in self.received_messages.items() if uid != requester_uid])
-        return np.prod(np.sign(q))*phi(sum(phi(np.absolute(q)+np.finfo(np.float_).eps)))  # type: ignore
+            return -np.log(np.maximum(np.tanh(x/2), 1e3*np.finfo(np.float_).eps))
+        return np.prod(np.sign(q))*phi(sum(phi(np.absolute(q))))  # type: ignore
 
 
 class VNode(Node):
