@@ -19,8 +19,8 @@ np.dot(h, np.array(encoded)) % 2  # creates an all zero vector as required.
 
 # create a decoder which assumes a probability of p=0.05 for bit flips by the channel
 # allow up to 20 iterations for the bp decoder.
-p = 0.05
-decoder = DecoderWiFi(spec=WiFiSpecCode.N648_R12, max_iter=20, channel_model=bsc_llr(p=p))
+p = 0.03
+decoder = DecoderWiFi(spec=WiFiSpecCode.N648_R12, max_iter=20, channel_model=bsc_llr(p=p), decoder_type="MS")
 
 # create a corrupted version of encoded codeword with error rate p
 corrupted = BitArray(encoded)

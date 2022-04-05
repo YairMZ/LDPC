@@ -102,6 +102,31 @@ class TestDecoder802_11:
         assert sum(encoded_ref ^ decoded) == 0
         assert sum(info_bits ^ decoded_info) == 0
 
+    def test_ms_decoder_1296_r23(self) -> None:
+        info_bits = Bits(auto=np.genfromtxt(
+            'tests/test_data/ieee_802_11/info_bits_N1296_R23.csv', delimiter=',', dtype=np.int_))
+        encoded_ref = Bits(auto=np.genfromtxt(
+            'tests/test_data/ieee_802_11/encoded_N1296_R23.csv', delimiter=',', dtype=np.int_))
+        p = 0.01
+
+        corrupted = BitArray(encoded_ref)
+        no_errors = int(len(corrupted) * p)
+        rng = np.random.default_rng()
+        error_idx = rng.choice(len(corrupted), size=no_errors, replace=False)
+        for idx in error_idx:
+            corrupted[idx] = not corrupted[idx]
+
+        decoder = DecoderWiFi(spec=WiFiSpecCode.N1296_R23, max_iter=20, channel_model=bsc_llr(p=p),decoder_type="MS")
+        decoded = Bits()
+        decoded_info = Bits()
+        for frame_idx in range(len(corrupted) // decoder.n):
+            decoder_output = decoder.decode(corrupted[frame_idx * decoder.n: (frame_idx + 1) * decoder.n])
+            decoded += decoder_output[0]
+            decoded_info += decoder.info_bits(decoder_output[0])
+            assert decoder_output[2] is True
+        assert sum(encoded_ref ^ decoded) == 0
+        assert sum(info_bits ^ decoded_info) == 0
+
     def test_decoder_no_info(self) -> None:
         p = 0.1
         h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()

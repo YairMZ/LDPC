@@ -30,12 +30,13 @@ class TannerGraph:
         self.v_nodes[node.uid] = node
         return node
 
-    def add_c_node(self, name: str = "", ordering_key: Optional[int] = None) -> CNode:
+    def add_c_node(self, name: str = "", ordering_key: Optional[int] = None, decoder: Optional[str] = "BP") -> CNode:
         """
         :param ordering_key: use only for debug purposes
         :param name: name of node
+        :param decoder: must be either "BP" or "MS" for min-sum decoder
         """
-        node = CNode(name, ordering_key)
+        node = CNode(name, ordering_key, decoder=decoder)
         self.c_nodes[node.uid] = node
         return node
 
@@ -68,10 +69,10 @@ class TannerGraph:
         for v_name, c_name in edges_set:
             v_uid = [node.uid for node in self.v_nodes.values() if node.name == v_name]
             if not v_uid:
-                raise ValueError("No v-node with name " + v_name + " in graph")
+                raise ValueError(f"No v-node with name {v_name} in graph")
             c_uid = [node.uid for node in self.c_nodes.values() if node.name == c_name]
             if not c_uid:
-                raise ValueError("No c-node with name " + c_name + " in graph")
+                raise ValueError(f"No c-node with name {c_name} in graph")
             self.add_edge(v_uid[0], c_uid[0])
 
     def get_edges(self, by_name: bool = False) -> Union[set[tuple[str, str]], EdgesSet]:
@@ -94,12 +95,14 @@ class TannerGraph:
         return g
 
     @classmethod
-    def from_biadjacency_matrix(cls, h: npt.ArrayLike, channel_model: Optional[ChannelModel] = None) -> TannerGraph:
+    def from_biadjacency_matrix(cls, h: npt.ArrayLike, channel_model: Optional[ChannelModel] = None,
+                                decoder: Optional[str] = "BP") -> TannerGraph:
         """
         Creates a Tanner Graph from a biadjacency matrix, nodes are ordered according to matrix indices.
 
         :param channel_model: channel model to compute channel symbols llr within v nodes
         :param h: parity check matrix, shape MXN with M check nodes and N variable nodes. assumed binary matrix.
+        :param decoder: must be either "BP" or "MS" for min-sum decoder
         """
         g = TannerGraph()
         h = np.array(h)
@@ -109,7 +112,7 @@ class TannerGraph:
             v_uid = g.add_v_node(name=f"v{i}", channel_model=channel_model, ordering_key=i).uid
             ordered_vnode_uid[i] = v_uid
         for j in range(m):
-            c_uid = g.add_c_node(name=f"c{j}", ordering_key=j).uid
+            c_uid = g.add_c_node(name=f"c{j}", ordering_key=j, decoder=decoder).uid
             for i in range(n):
                 if h[j, i] == 1:
                     g.add_edge(ordered_vnode_uid[i], c_uid)
