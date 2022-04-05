@@ -61,14 +61,18 @@ class Node(ABC):
         return self.uid
 
     def __eq__(self, other: Any) -> bool:
-        if not isinstance(other, Node):
-            return NotImplemented
-        return self.ordering_key == other.ordering_key
+        return (
+            self.ordering_key == other.ordering_key
+            if isinstance(other, Node)
+            else NotImplemented
+        )
 
     def __lt__(self, other: Any) -> bool:
-        if not isinstance(other, Node):
-            return NotImplemented
-        return self.ordering_key < other.ordering_key
+        return (
+            self.ordering_key < other.ordering_key
+            if isinstance(other, Node)
+            else NotImplemented
+        )
 
 
 class CNode(Node):
