@@ -17,7 +17,7 @@ class TestEncoderG:
         enc = EncoderG(g)
         assert enc.n == 7
         assert enc.k == 4
-        np.testing.assert_array_equal(g, enc.generator)
+        np.testing.assert_array_equal(g, enc.generator)  # type: ignore
 
     def test_encoding(self) -> None:
         g = AList.from_file("tests/test_data/Hamming_7_4_g.alist").to_array()
@@ -47,7 +47,7 @@ class TestEncoderTriangularH:
         assert enc.n == 4098
         assert enc.m == 3095
         assert enc.k == 4098-3095
-        np.testing.assert_array_equal(h, enc.h)
+        np.testing.assert_array_equal(h, enc.h)  # type: ignore
 
     def test_encoding(self) -> None:
         h = AList.from_file("tests/test_data/systematic_4098_3095.alist").to_array()

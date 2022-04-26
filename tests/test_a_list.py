@@ -44,7 +44,7 @@ class TestAList:
                                                  [0, 1, 3],
                                                  [0, 2, 3]]
         b = a.to_array()
-        np.testing.assert_array_equal(arr, b)
+        np.testing.assert_array_equal(arr, b)  # type: ignore
 
     def test_verify_alist(self) -> None:
         original_file = "ldpc/code_specs/Mackay_96.3.963.alist"
