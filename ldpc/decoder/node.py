@@ -1,14 +1,25 @@
 from __future__ import annotations
 import numpy as np
 import itertools
-from typing import Any, Optional
+from typing import Any, Optional, Tuple
 from functools import total_ordering
 from abc import ABC, abstractmethod
 import numpy.typing as npt
 from ldpc.decoder.channel_models import ChannelModel
+from numba import jit
 
 
 __all__ = ["Node", "CNode", "VNode"]
+
+
+@jit(nopython=True, cache=True)  # type: ignore
+def c_message(requester_uid: int, senders: Tuple[int], received_messages: Tuple[float]) -> np.float_:
+    q: npt.NDArray[np.float_] = np.array([msg for uid, msg in zip(senders, received_messages) if uid != requester_uid])
+    return -np.prod(np.sign(q)) * np.log(  # type: ignore
+        np.maximum(np.tanh(
+            sum(
+                -np.log(np.maximum(np.tanh(np.absolute(q) / 2), 1e3 * np.finfo(np.float_).eps))
+            ) / 2), 1e3 * np.finfo(np.float_).eps))
 
 
 @total_ordering  # type: ignore
@@ -28,7 +39,7 @@ class Node(ABC):
         self.name = name or str(self.uid)
         self.ordering_key = ordering_key if ordering_key is not None else self.uid
         self.neighbors: dict[int, Node] = {}  # keys as senders uid
-        self.received_messages: dict[int, Any] = {}  # keys as senders uid, values as messages
+        self.received_messages: dict[int, np.float_] = {}  # keys as senders uid, values as messages
 
     def register_neighbor(self, neighbor: Node) -> None:
         self.neighbors[neighbor.uid] = neighbor
@@ -48,7 +59,7 @@ class Node(ABC):
             self.received_messages[node_id] = node.message(self.uid)
 
     @abstractmethod
-    def message(self, requester_uid: int) -> Any:
+    def message(self, requester_uid: int) -> np.float_:
         """Used to return a message to the requesting node"""
         pass
 
@@ -87,23 +98,30 @@ class CNode(Node):
         """
         clear received messages
         """
-        self.received_messages = {node_uid: 0 for node_uid in self.neighbors}
+        self.received_messages = {node_uid: 0 for node_uid in self.neighbors}  # type: ignore
 
     def message(self, requester_uid: int) -> np.float_:
         """
         pass messages from c-nodes to v-nodes
         :param requester_uid: uid of requesting v-node
         """
-        q: npt.NDArray[np.float_] = np.array([msg for uid, msg in self.received_messages.items() if uid != requester_uid])
         if self.decoder_type == "MS":
+            q: npt.NDArray[np.float_] = np.array([msg for uid, msg in self.received_messages.items() if uid != requester_uid])
             return np.prod(np.sign(q)) * np.absolute(q).min()   # type: ignore
 
-
         # full BP
-        def phi(x: npt.NDArray[np.float_]) -> Any:
-            """see sources for definition and reasons for use of this function"""
-            return -np.log(np.maximum(np.tanh(x/2), 1e3*np.finfo(np.float_).eps))
-        return np.prod(np.sign(q))*phi(sum(phi(np.absolute(q))))  # type: ignore
+        return c_message(requester_uid, tuple(self.received_messages.keys()), tuple(self.received_messages.values()))  # type: ignore
+
+        # def phi(x: npt.NDArray[np.float_]) -> npt.NDArray[np.float_]:
+        #     """see sources for definition and reasons for use of this function"""
+        #     return -np.log(np.maximum(np.tanh(x / 2), 1e3 * np.finfo(np.float_).eps))
+        # return np.prod(np.sign(q))*phi(sum(phi(np.absolute(q))))  # type: ignore
+
+        # return -np.prod(np.sign(q)) * np.log(
+        #     np.maximum(np.tanh(
+        #         sum(
+        #             -np.log(np.maximum(np.tanh(np.absolute(q) / 2), 1e3 * np.finfo(np.float_).eps))
+        #         ) / 2), 1e3 * np.finfo(np.float_).eps))
 
 
 class VNode(Node):
@@ -129,7 +147,7 @@ class VNode(Node):
             self.channel_llr = self.channel_model(channel_symbol)
         else:
             self.channel_llr = channel_symbol
-        self.received_messages = {node_uid: 0 for node_uid in self.neighbors}
+        self.received_messages = {node_uid: 0 for node_uid in self.neighbors}  # type: ignore
 
     def message(self, requester_uid: int) -> np.float_:
         """

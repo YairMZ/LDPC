@@ -83,7 +83,7 @@ class LogSpaDecoder:
                 break
 
         # for each vnode how many equations are failed
-        vnode_validity: npt.NDArray[np.int_] = np.dot(syndrome, self.h)
+        vnode_validity: npt.NDArray[np.int_] = np.dot(syndrome, self.h)  # type: ignore
         # for each vnode how many equations are fulfilled
         # vnode_validity: npt.NDArray[np.int_] = np.zeros(self.n, dtype=np.int_)
         # syndrome_compliance = {cnode: int(val == 0) for cnode, val in zip(self.ordered_cnodes_uids, syndrome)}

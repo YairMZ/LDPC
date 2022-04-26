@@ -34,6 +34,6 @@ class EncoderTriangularH(Encoder):
         p: npt.NDArray[np.int_] = np.mod(np.matmul(self.h[:, :self.k], info), 2)
         if not self.identity_p:
             for l in range(1, self.m):
-                p[l] += np.mod(np.dot(self.h[l, self.k:self.k+l], p[:l]), 2)
+                p[l] += np.mod(np.dot(self.h[l, self.k:self.k+l], p[:l]), 2)  # type: ignore
         encoded[self.k:] = p
         return Bits(encoded)
