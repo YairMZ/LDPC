@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 from typing import Optional, Union
 from ldpc.decoder.channel_models import ChannelModel
+import scipy as sp
 
 
 __all__ = ["TannerGraph"]
@@ -105,17 +106,23 @@ class TannerGraph:
         :param decoder: must be either "BP" or "MS" for min-sum decoder
         """
         g = TannerGraph()
-        h = np.array(h)
+        # h = np.array(h)
         m, n = h.shape
         ordered_vnode_uid = [0]*n
         for i in range(n):
             v_uid = g.add_v_node(name=f"v{i}", channel_model=channel_model, ordering_key=i).uid
             ordered_vnode_uid[i] = v_uid
-        for j in range(m):
-            c_uid = g.add_c_node(name=f"c{j}", ordering_key=j, decoder=decoder).uid
-            for i in range(n):
-                if h[j, i] == 1:
-                    g.add_edge(ordered_vnode_uid[i], c_uid)
+        if isinstance(h, np.ndarray):
+            for j in range(m):
+                c_uid = g.add_c_node(name=f"c{j}", ordering_key=j, decoder=decoder).uid
+                for i in range(n):
+                    if h[j, i] == 1:
+                        g.add_edge(ordered_vnode_uid[i], c_uid)
+        if isinstance(h, sp.sparse.lil.lil_matrix):
+            for j in range(m):
+                c_uid = g.add_c_node(name=f"c{j}", ordering_key=j, decoder=decoder).uid
+                for col in h.rows[j]:
+                    g.add_edge(ordered_vnode_uid[col], c_uid)
         return g
 
     def __str__(self) -> str:

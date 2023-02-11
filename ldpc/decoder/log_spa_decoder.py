@@ -32,7 +32,7 @@ class LogSpaDecoder:
         """
         self.decoder_type = decoder_type
         self.info_idx = info_idx
-        self.h: npt.NDArray[np.int_] = np.array(h)
+        self.h: npt.NDArray[np.int_] = h
         self.graph = TannerGraph.from_biadjacency_matrix(h=self.h, channel_model=channel_model, decoder=decoder_type)
         self.n = len(self.graph.v_nodes)
         self.max_iter = max_iter
@@ -78,12 +78,12 @@ class LogSpaDecoder:
             # Check stop condition
             llr: npt.NDArray[np.float_] = np.array([node.estimate() for node in self._ordered_vnodes], dtype=np.float_)
             estimate: npt.NDArray[np.int_] = np.array(llr < 0, dtype=np.int_)
-            syndrome = self.h.dot(estimate) % 2
+            syndrome = self.h @ estimate % 2
             if not syndrome.any():
                 break
 
         # for each vnode how many equations are failed
-        vnode_validity: npt.NDArray[np.int_] = np.dot(syndrome, self.h)  # type: ignore
+        vnode_validity: npt.NDArray[np.int_] = syndrome @ self.h  # type: ignore
         # for each vnode how many equations are fulfilled
         # vnode_validity: npt.NDArray[np.int_] = np.zeros(self.n, dtype=np.int_)
         # syndrome_compliance = {cnode: int(val == 0) for cnode, val in zip(self.ordered_cnodes_uids, syndrome)}
