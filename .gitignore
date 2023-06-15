@@ -6,3 +6,7 @@
 /.idea/
 /tests/
 /coverage.xml
+build
+.ipynb_checkpoints
+dist
+*__pycache__*
