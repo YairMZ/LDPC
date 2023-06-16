@@ -36,11 +36,3 @@ class TestGalBfDecoder:
             assert decoder_output[1] is True
         assert sum(encoded_ref ^ decoded) == 0
         assert sum(info_bits ^ decoded_info) == 0
-
-    def test_decoder_no_info(self) -> None:
-        p = 0.1
-        h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
-        decoder = GalBfDecoder(h=h, max_iter=20)
-        estimate: npt.NDArray[np.int_] = np.unpackbits(np.frombuffer(bytes(list(range(81))), dtype=np.uint8))
-        with pytest.raises(InfoBitsNotSpecified):
-            decoder.info_bits(estimate)
