@@ -2,19 +2,14 @@ from ldpc.decoder.graph import TannerGraph
 from numpy.typing import ArrayLike, NDArray
 import numpy as np
 from collections.abc import Sequence
-from ldpc.decoder.channel_models import ChannelModel
+from ldpc.decoder.common import ChannelModel, InfoBitsNotSpecified
 from typing import Optional
 from bitstring import Bits
 from ldpc.utils import IncorrectLength
 from ldpc.decoder.node import VNode
 import numpy.typing as npt
 
-__all__ = ["LogSpaDecoder", "InfoBitsNotSpecified"]
-
-
-class InfoBitsNotSpecified(Exception):
-    """Raised when a non-binary matrix is used while a binary one expected"""
-    pass
+__all__ = ["LogSpaDecoder"]
 
 
 class LogSpaDecoder:
@@ -54,7 +49,7 @@ class LogSpaDecoder:
             - decode_success is a boolean flag stating of the estimated_bits form a valid  code word
             - no_iterations is the number of iterations of belief propagation before exiting the loop
             - syndrome
-            - a measure of validity of each vnode, higher is better
+            - a measure of validity of each vnode, lower is better
         """
         if len(channel_word) != self.n:
             raise IncorrectLength("incorrect block size")

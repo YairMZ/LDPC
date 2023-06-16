@@ -5,7 +5,7 @@ from typing import Any, Optional, Tuple
 from functools import total_ordering
 from abc import ABC, abstractmethod
 import numpy.typing as npt
-from ldpc.decoder.channel_models import ChannelModel
+from ldpc.decoder.common import ChannelModel
 from numba import jit
 
 

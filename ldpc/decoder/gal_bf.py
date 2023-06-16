@@ -2,13 +2,9 @@ from numpy.typing import ArrayLike, NDArray
 import numpy as np
 from typing import Optional
 from ldpc.utils import IncorrectLength
+from ldpc.decoder.common import InfoBitsNotSpecified
 
-__all__ = ["GalBfDecoder", "InfoBitsNotSpecified"]
-
-
-class InfoBitsNotSpecified(Exception):
-    """Raised when a non-binary matrix is used while a binary one expected"""
-    pass
+__all__ = ["GalBfDecoder"]
 
 
 class GalBfDecoder:
@@ -38,11 +34,10 @@ class GalBfDecoder:
         :return: return a tuple (estimated_bits, llr, decode_success, no_iterations)
         where:
             - estimated_bits is a 1-d np array of hard bit estimates
-            - llr is a 1-d np array of soft bit estimates
             - decode_success is a boolean flag stating of the estimated_bits form a valid  code word
             - no_iterations is the number of iterations of belief propagation before exiting the loop
             - syndrome
-            - a measure of validity of each vnode, higher is better
+            - a measure of validity of each vnode, lower is better
         """
         if len(channel_word) != self.n:
             raise IncorrectLength("incorrect block size")

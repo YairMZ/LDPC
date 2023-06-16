@@ -4,6 +4,7 @@ The module implements decoders for LDPC codes. Currently implemented:
 [Log-SPA algorithm](https://yairmz.github.io/LDPC/ldpc_overview/log_spa.html).
    - MS - Initializing the [LogSpaDecoder](log_spa_decoder.py) decoder using `MS` as the `decoder_type` argument will result in an MS decoder
    - Bit Flipping  - Gallager bit flipping algorithm. See [GalBfDecoder](gal_bf.py)
+   - Weighted Bit Flipping - Three Weighted bit flipping algorithms. See [WbfDecoder](wbf.py)
 
 ------
 ## Examples:

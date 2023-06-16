@@ -4,7 +4,7 @@ from ldpc.decoder.node import VNode, CNode
 import numpy as np
 import numpy.typing as npt
 from typing import Optional, Union
-from ldpc.decoder.channel_models import ChannelModel
+from ldpc.decoder.common import ChannelModel
 import scipy as sp
 
 

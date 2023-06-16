@@ -37,6 +37,7 @@ simulations.
    - Log-SPA based BP decoder
    - MS decodcer
    - Gallager bit filpping decoder
+   - Weighted bit flipping decoders, several variants
 
 -----
 
