@@ -24,9 +24,9 @@ class TestGalBfDecoder:
         decoded = np.zeros_like(encoded_ref)
         decoded_info = np.zeros_like(info_bits)
         rng = np.random.default_rng()
+        no_errors = 1
         for frame_idx in range(len(encoded_ref) // decoder.n):
             corrupted = encoded_ref[frame_idx * decoder.n: (frame_idx + 1) * decoder.n].copy()
-            no_errors = 1
             error_idx = rng.choice(len(corrupted), size=no_errors, replace=False)
             corrupted[error_idx] = 1 - corrupted[error_idx]
 
