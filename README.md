@@ -33,7 +33,10 @@ mypy --strict --config-file .mypy.ini .
  - [Utilities](ldpc/utils/README.md): implementing various utility operations to assist with encoding, decoding and 
 simulations.
  - [Encoder](ldpc/encoder/README.md): implementing a generator based encoder, and encoders for IEEE802.11 (WiFi) LDPC codes.
- - [Decoder](ldpc/decoder/README.md): implementing a Log-SPA based BP decoder.
+ - [Decoder](ldpc/decoder/README.md): implementing several decoders
+   - Log-SPA based BP decoder
+   - MS decodcer
+   - Gallager bit filpping decoder
 
 -----
 
