@@ -22,7 +22,7 @@ def c_message(requester_uid: int, senders: Tuple[int], received_messages: Tuple[
             ) / 2), 1e3 * np.finfo(np.float_).eps))
 
 
-@total_ordering  # type: ignore
+@total_ordering
 class Node(ABC):
     """Base class VNodes anc CNodes.
     Derived classes are expected to implement an "initialize" and  method a "message" which should return the message to

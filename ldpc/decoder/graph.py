@@ -118,7 +118,7 @@ class TannerGraph:
                 for i in range(n):
                     if h[j, i] == 1:
                         g.add_edge(ordered_vnode_uid[i], c_uid)
-        if isinstance(h, sp.sparse.lil.lil_matrix):
+        if isinstance(h, sp.sparse.lil_matrix):
             for j in range(m):
                 c_uid = g.add_c_node(name=f"c{j}", ordering_key=j, decoder=decoder).uid
                 for col in h.rows[j]:

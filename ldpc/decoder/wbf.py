@@ -29,7 +29,7 @@ class WbfDecoder:
         “A decoding algorithm for finite-geometry LDPC codes”
     """
     def __init__(self, h: ArrayLike, max_iter: int, decoder_variant: WbfVariant, info_idx: Optional[NDArray[np.bool_]] = None,
-                 **kwargs: dict) -> None:
+                 **kwargs) -> None:
         """
 
         :param h:the parity check code matrix of the code
@@ -53,9 +53,7 @@ class WbfDecoder:
             mean_mj_size = np.array([len(self.vnode2check[j]) for j in range(self.n)]).mean()
             self.confidence_coefficient: float = kwargs.get("confidence_coefficient",1/mean_mj_size)
 
-
-
-    def decode(self, channel_llr: NDArray[np.float_], prior_reliability: NDArray[np.float_]= None) \
+    def decode(self, channel_llr: NDArray[np.float_], prior_reliability: Optional[NDArray[np.float_]]= None) \
             -> tuple[NDArray[np.int_], bool, int, NDArray[np.int_], NDArray[np.int_]]:
         """
         decode a sequence received from the channel
@@ -77,6 +75,8 @@ class WbfDecoder:
             prior_reliability = np.zeros(self.n, dtype=np.float_)
         if self.decoder_variant in {WbfVariant.WBF, WbfVariant.MWBF, WbfVariant.MWBF_NO_LOOPS}:
             return self._decode_wbf_and_mwbf(channel_llr, prior_reliability)
+        else:
+            raise NotImplementedError("decoder variant not implemented")
 
     def info_bits(self, estimate: NDArray[np.int_]) -> NDArray[np.int_]:
         """extract information bearing bits from decoded estimate, assuming info bits indices were specified"""
@@ -85,7 +85,8 @@ class WbfDecoder:
         else:
             raise InfoBitsNotSpecified("decoder cannot tell info bits")
 
-    def _decode_wbf_and_mwbf(self, channel_llr: NDArray[np.float_], prior_reliability: NDArray[np.float_]):
+    def _decode_wbf_and_mwbf(self, channel_llr: NDArray[np.float_], prior_reliability: NDArray[np.float_])-> tuple[
+        NDArray[np.int_], bool, int, NDArray[np.int_], NDArray[np.int_]]:
         """
         decode a sequence received from the channel using the WBF or MWBF algorithm
         :param channel_llr: received LLR values
@@ -98,8 +99,8 @@ class WbfDecoder:
         reliability_profile = np.zeros(self.n, dtype=np.float_)  # bit is more reliable as reliability_profile is lower
         # (more negative), and less reliable as it is higher (more positive)
         if self.decoder_variant == WbfVariant.MWBF_NO_LOOPS:
-            loop_exclusion_list = []
-            last_flip_sequence = set()
+            loop_exclusion_list: list[set[int,],] = []
+            last_flip_sequence: set[int,] = set()
 
         for iteration in range(self.max_iter):
             syndrome = self.h @ channel_word % 2
@@ -125,7 +126,7 @@ class WbfDecoder:
             channel_word[flip_bit] = 1-channel_word[flip_bit]
         return channel_word, not syndrome.any(), iteration, syndrome, reliability_profile
 
-    def syndrome_reliability(self, abs_llr: NDArray[np.float_]) -> NDArray[np.float_]:
+    def syndrome_reliability(self, abs_llr: NDArray[np.float_]) -> NDArray[np.float_]| list[dict[int, float]]:
         """
         return the reliability of each bit in the syndrome. The higher the value, the more reliable the bit is.
         """
@@ -145,7 +146,7 @@ class WbfDecoder:
         else:
             raise ValueError("unknown decoder variant")
 
-    def _choose_next_flip(self, last_flip_sequence, loop_exclusion_list, reliability_profile):
+    def _choose_next_flip(self, last_flip_sequence, loop_exclusion_list, reliability_profile) -> tuple[int, set[int,]]:
         """
         verify that there are no loops in the sequence of attempts to flip bits in MWBF_NO_LOOPS decoder
         """
@@ -155,10 +156,7 @@ class WbfDecoder:
             candidate_sequence = last_flip_sequence.copy()
             flip_bit = np.argwhere((reliability_profile == np.amax(reliability_profile[allowed_flip_bits])) & allowed_flip_bits
                                    ).flatten()
-            try:
-                flip_bit = np.random.choice(flip_bit) if len(flip_bit) > 1 else flip_bit[0]
-            except IndexError:
-                raise RuntimeError("no bits to flip")
+            flip_bit = np.random.choice(flip_bit) if len(flip_bit) > 1 else flip_bit[0]
             if flip_bit in last_flip_sequence:
                 candidate_sequence.remove(flip_bit)
             else:

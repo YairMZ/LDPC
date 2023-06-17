@@ -51,7 +51,7 @@ class GalBfDecoder:
             if not syndrome.any():  # no errors detected, exit
                 break
             # for each vnode how many equations are failed
-            vnode_validity: NDArray[np.int_] = syndrome @ self.h
+            vnode_validity = syndrome @ self.h
             num_suspected_vnodes = sum(vnode_validity > 0)
             num_flip_bits = 1#max(1, num_suspected_vnodes//self.percent_flipped)  # flip 10% of the suspected bits
             flip_bits = np.argpartition(vnode_validity,-num_flip_bits)[-num_flip_bits:]

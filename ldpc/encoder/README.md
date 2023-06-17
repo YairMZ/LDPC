@@ -4,6 +4,7 @@ The module implements encoders for LDPC codes. Currently implemented:
 specified generator matrix.
    - IEEE802.11 - The [EncoderWiFi](ieee802_11_encoder.py) class allows encoding frames using the IEEE802.11 spec codes.
 Encoding is done via back substitution.
+   - Parity check based - [EncoderTriangularH](h_based_encoder.py) class allows encoding frames via back substitution. It requires a lower triangular parity check matrix.
 
 ------
 ## Examples:
@@ -21,7 +22,7 @@ from ldpc.wifi_spec_codes import WiFiSpecCode
 from ldpc.utils import QCFile
 
 # create information bearing bits
-bits = Bits(bytes=bytes(list(range(41))))[:648 // 2]
+bits = np.array(Bits(bytes=bytes(list(range(41))))[:648 // 2], dtype=np.int_)
 # create encoder with frame of 648 bits, and rate 1/2. Possible rates and frame sizes are per the ieee802.11n spec.
 enc = EncoderWiFi(WiFiSpecCode.N648_R12)
 # encode bits
