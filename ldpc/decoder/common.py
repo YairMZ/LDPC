@@ -18,7 +18,8 @@ def bsc_llr(p: float) -> ChannelModel:
     :param float p: the llr is parameterized by the bit flip probability of the channel p.
     :returns: return a callable which accepts a single argument - y_i (a bit from the channel), and returns its llr
     """
-    return lambda y: np.power(-1, y) * np.log((1-p)/p) # type: ignore
+    return lambda y: np.power(-1, y) * np.log((1-p)/p)  # type: ignore
+
 
 def awgn_llr(sigma: float) -> ChannelModel:
     """
@@ -29,7 +30,7 @@ def awgn_llr(sigma: float) -> ChannelModel:
     :param float sigma: the llr is parameterized by the standard deviation of the noise sigma.
     :returns: return a callable which accepts a single argument - y_i noisy channel symbol, and returns its llr
     """
-    return lambda y: 2 * y / np.power(sigma, 2) # type: ignore
+    return lambda y: 2 * y / np.power(sigma, 2)  # type: ignore
 
 # Simply add more channel models by writing a function which receives a channel symbol as input and returns an LLR as
 # output

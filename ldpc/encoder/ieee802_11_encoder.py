@@ -54,7 +54,7 @@ class EncoderWiFi(Encoder):
 
         # find shifted messages (termed lambda_i in article)
         shifted_messages: NDArray[np.int_] = np.zeros((self.m // self.z, self.z),
-                                                          dtype=np.int_)  # each row is a sum of circular shifts of
+                                                      dtype=np.int_)  # each row is a sum of circular shifts of
         # message bits (some lambda_i in article). One row per block of h.
         for i in range(self.m // self.z):
             for j in range(self.k // self.z):

@@ -20,7 +20,8 @@ class TestWbfDecoder:
             'tests/test_data/ieee_802_11/encoded_N648_R12.csv', delimiter=',', dtype=np.int_)  # type: ignore
 
         h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
-        decoder = WbfDecoder(h=h, max_iter=2000, decoder_variant=WbfVariant.WBF, info_idx=np.array([True] * 324 + [False] * 324))
+        decoder = WbfDecoder(h=h, max_iter=2000, decoder_variant=WbfVariant.WBF, info_idx=np.array(
+            [True] * 324 + [False] * 324))
         decoded = np.zeros_like(encoded_ref)
         decoded_info = np.zeros_like(info_bits)
         rng = np.random.default_rng()
@@ -47,7 +48,8 @@ class TestWbfDecoder:
             'tests/test_data/ieee_802_11/encoded_N648_R12.csv', delimiter=',', dtype=np.int_)  # type: ignore
 
         h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
-        decoder = WbfDecoder(h=h, max_iter=2000, decoder_variant=WbfVariant.MWBF, info_idx=np.array([True] * 324 + [False] * 324))
+        decoder = WbfDecoder(h=h, max_iter=2000, decoder_variant=WbfVariant.MWBF, info_idx=np.array(
+            [True] * 324 + [False] * 324))
         decoded = np.zeros_like(encoded_ref)
         decoded_info = np.zeros_like(info_bits)
         rng = np.random.default_rng()
@@ -76,7 +78,8 @@ class TestWbfDecoder:
             'tests/test_data/ieee_802_11/encoded_N648_R12.csv', delimiter=',', dtype=np.int_)  # type: ignore
 
         h = QCFile.from_file("ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
-        decoder = WbfDecoder(h=h, max_iter=200, decoder_variant=WbfVariant.MWBF_NO_LOOPS, info_idx=np.array([True] * 324 + [False] * 324))
+        decoder = WbfDecoder(h=h, max_iter=200, decoder_variant=WbfVariant.MWBF_NO_LOOPS, info_idx=np.array(
+            [True] * 324 + [False] * 324))
         decoded = np.zeros_like(encoded_ref)
         decoded_info = np.zeros_like(info_bits)
         rng = np.random.default_rng()

@@ -116,7 +116,7 @@ class TestDecoder802_11:
         for idx in error_idx:
             corrupted[idx] = not corrupted[idx]
 
-        decoder = DecoderWiFi(spec=WiFiSpecCode.N1296_R23, max_iter=20, channel_model=bsc_llr(p=p),decoder_type="MS")
+        decoder = DecoderWiFi(spec=WiFiSpecCode.N1296_R23, max_iter=20, channel_model=bsc_llr(p=p), decoder_type="MS")
         decoded = Bits()
         decoded_info = Bits()
         for frame_idx in range(len(corrupted) // decoder.n):

@@ -46,20 +46,21 @@ class WbfDecoder:
 
         if self.decoder_variant in {WbfVariant.WBF, WbfVariant.MWBF, WbfVariant.MWBF_NO_LOOPS}:
             # for each check node i, which vnodes j are connected to it, referred to as the "N_i" set in by Ryan
-            self.check2vnode = {i: [j for j in range(self.n) if self.h[i,j] == 1] for i in range(self.m)}
+            self.check2vnode = {i: [j for j in range(self.n) if self.h[i, j] == 1] for i in range(self.m)}
             # for each vnode j, which cnodes i are connected to it, referred to as the "M_j" set in by Ryan
-            self.vnode2check = {j: [i for i in range(self.m) if self.h[i,j] == 1] for j in range(self.n)}
+            self.vnode2check = {j: [i for i in range(self.m) if self.h[i, j] == 1] for j in range(self.n)}
         if self.decoder_variant in {WbfVariant.MWBF, WbfVariant.MWBF_NO_LOOPS}:
             mean_mj_size = np.array([len(self.vnode2check[j]) for j in range(self.n)]).mean()
-            self.confidence_coefficient: float = kwargs.get("confidence_coefficient",1/mean_mj_size)
+            self.confidence_coefficient: float = kwargs.get("confidence_coefficient", 1/mean_mj_size)
 
-    def decode(self, channel_llr: NDArray[np.float_], prior_reliability: Optional[NDArray[np.float_]]= None) \
+    def decode(self, channel_llr: NDArray[np.float_], prior_reliability: Optional[NDArray[np.float_]] = None) \
             -> tuple[NDArray[np.int_], bool, int, NDArray[np.int_], NDArray[np.int_]]:
         """
         decode a sequence received from the channel
 
         :param channel_llr: a sequence of channel LLR values
-        :param prior_reliability: an array of prior reliabilities for each bit, 0 is no prior reliability, positive means more reliable, negative means less reliable
+        :param prior_reliability: an array of prior reliabilities for each bit, 0 is no prior reliability, positive means more
+        reliable, negative means less reliable
         :return: return a tuple (estimated_bits, llr, decode_success, no_iterations)
         where:
             - estimated_bits is a 1-d np array of hard bit estimates
@@ -85,8 +86,8 @@ class WbfDecoder:
         else:
             raise InfoBitsNotSpecified("decoder cannot tell info bits")
 
-    def _decode_wbf_and_mwbf(self, channel_llr: NDArray[np.float_], prior_reliability: NDArray[np.float_])-> tuple[
-        NDArray[np.int_], bool, int, NDArray[np.int_], NDArray[np.int_]]:
+    def _decode_wbf_and_mwbf(self, channel_llr: NDArray[np.float_], prior_reliability: NDArray[np.float_]) -> \
+            tuple[NDArray[np.int_], bool, int, NDArray[np.int_], NDArray[np.int_]]:
         """
         decode a sequence received from the channel using the WBF or MWBF algorithm
         :param channel_llr: received LLR values
@@ -99,8 +100,8 @@ class WbfDecoder:
         reliability_profile = np.zeros(self.n, dtype=np.float_)  # bit is more reliable as reliability_profile is lower
         # (more negative), and less reliable as it is higher (more positive)
         if self.decoder_variant == WbfVariant.MWBF_NO_LOOPS:
-            loop_exclusion_list: list[set[int,],] = []
-            last_flip_sequence: set[int,] = set()
+            loop_exclusion_list: list[set[int, ], ] = []
+            last_flip_sequence: set[int, ] = set()
 
         for iteration in range(self.max_iter):
             syndrome = self.h @ channel_word % 2
@@ -110,7 +111,7 @@ class WbfDecoder:
                 reliability_profile = np.array([sum((2 * syndrome[i] - 1) * cnode_validity[i] for i in self.vnode2check[j])
                                                 for j in range(self.n)], dtype=np.float_)
             elif self.decoder_variant in {WbfVariant.MWBF, WbfVariant.MWBF_NO_LOOPS}:
-                reliability_profile = np.array([sum((2*syndrome[i] -1)*cnode_validity[i][j] for i in self.vnode2check[j])
+                reliability_profile = np.array([sum((2*syndrome[i] - 1)*cnode_validity[i][j] for i in self.vnode2check[j])
                                                 for j in range(self.n)], dtype=np.float_)
                 reliability_profile -= self.confidence_coefficient * abs_llr
             reliability_profile -= prior_reliability
@@ -119,9 +120,9 @@ class WbfDecoder:
                                                                         reliability_profile)
                 last_flip_sequence = chosen_flip_sequence
                 loop_exclusion_list.append(chosen_flip_sequence)
-            else: # WBF and MWBF
+            else:  # WBF and MWBF
                 flip_bit = np.argwhere(reliability_profile == np.amax(reliability_profile)).flatten()
-                if len(flip_bit) > 1: # if there are several bits with the same reliability, choose one at random
+                if len(flip_bit) > 1:  # if there are several bits with the same reliability, choose one at random
                     flip_bit = np.random.choice(flip_bit)
             channel_word[flip_bit] = 1-channel_word[flip_bit]
         return channel_word, not syndrome.any(), iteration, syndrome, reliability_profile
@@ -136,7 +137,7 @@ class WbfDecoder:
             cnode_validity = [None]*self.m
             for i in range(self.m):
                 mask = np.ones(len(self.check2vnode[i]), dtype=np.bool_)
-                for idx,j in enumerate(self.check2vnode[i]):
+                for idx, j in enumerate(self.check2vnode[i]):
                     if cnode_validity[i] is None:
                         cnode_validity[i] = {}
                     mask[idx] = False
@@ -146,7 +147,7 @@ class WbfDecoder:
         else:
             raise ValueError("unknown decoder variant")
 
-    def _choose_next_flip(self, last_flip_sequence, loop_exclusion_list, reliability_profile) -> tuple[int, set[int,]]:
+    def _choose_next_flip(self, last_flip_sequence, loop_exclusion_list, reliability_profile) -> tuple[int, set[int, ]]:
         """
         verify that there are no loops in the sequence of attempts to flip bits in MWBF_NO_LOOPS decoder
         """

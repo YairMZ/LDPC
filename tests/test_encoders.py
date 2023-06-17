@@ -23,7 +23,7 @@ class TestEncoderG:
         g = AList.from_file("tests/test_data/Hamming_7_4_g.alist").to_array()
         enc = EncoderG(g)
         bits: npt.NDArray[np.int_] = np.array([1, 1, 0, 1])
-        encoded = np.matmul(bits, g)%2
+        encoded = np.matmul(bits, g) % 2
         res = enc.encode(bits)
         assert Bits(res) == Bits(encoded)
 

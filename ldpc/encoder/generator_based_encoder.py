@@ -20,4 +20,4 @@ class EncoderG(Encoder):
     def encode(self, information_bits: NDArray[np.int_]) -> NDArray[np.int_]:
         if len(information_bits) != self.k:
             raise IncorrectLength
-        return np.matmul(np.array(information_bits, dtype=np.int_), self.generator) % 2 # type: ignore
+        return np.matmul(np.array(information_bits, dtype=np.int_), self.generator) % 2  # type: ignore

@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 from ldpc.utils import IncorrectLength, QCFile
-from ldpc.decoder import GalBfDecoder, InfoBitsNotSpecified
+from ldpc.decoder import GalBfDecoder
 import numpy.typing as npt
 
 

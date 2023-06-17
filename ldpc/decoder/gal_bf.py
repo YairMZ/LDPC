@@ -53,8 +53,8 @@ class GalBfDecoder:
             # for each vnode how many equations are failed
             vnode_validity = syndrome @ self.h
             num_suspected_vnodes = sum(vnode_validity > 0)
-            num_flip_bits = 1#max(1, num_suspected_vnodes//self.percent_flipped)  # flip 10% of the suspected bits
-            flip_bits = np.argpartition(vnode_validity,-num_flip_bits)[-num_flip_bits:]
+            num_flip_bits = 1  # max(1, num_suspected_vnodes//self.percent_flipped)  # flip 10% of the suspected bits
+            flip_bits = np.argpartition(vnode_validity, -num_flip_bits)[-num_flip_bits:]
             channel_word[flip_bits] = 1 - channel_word[flip_bits]
 
         return channel_word, not syndrome.any(), iteration+1, syndrome, vnode_validity

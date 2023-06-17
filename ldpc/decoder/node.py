@@ -110,7 +110,8 @@ class CNode(Node):
             return np.prod(np.sign(q)) * np.absolute(q).min()   # type: ignore
 
         # full BP
-        return c_message(requester_uid, tuple(self.received_messages.keys()), tuple(self.received_messages.values()))  # type: ignore
+        return c_message(requester_uid, tuple(self.received_messages.keys()), tuple(self.received_messages.values())
+                         )  # type: ignore
 
         # def phi(x: npt.NDArray[np.float_]) -> npt.NDArray[np.float_]:
         #     """see sources for definition and reasons for use of this function"""
