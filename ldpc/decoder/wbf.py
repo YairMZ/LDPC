@@ -1,6 +1,6 @@
 from numpy.typing import ArrayLike, NDArray
 import numpy as np
-from typing import Optional
+from typing import Optional, Union
 from ldpc.utils import IncorrectLength
 from ldpc.decoder.common import InfoBitsNotSpecified
 from enum import Enum, auto
@@ -126,7 +126,7 @@ class WbfDecoder:
             channel_word[flip_bit] = 1-channel_word[flip_bit]
         return channel_word, not syndrome.any(), iteration, syndrome, reliability_profile
 
-    def syndrome_reliability(self, abs_llr: NDArray[np.float_]) -> NDArray[np.float_]| list[dict[int, float]]:
+    def syndrome_reliability(self, abs_llr: NDArray[np.float_]) -> Union[NDArray[np.float_], list[dict[int, float]]]:
         """
         return the reliability of each bit in the syndrome. The higher the value, the more reliable the bit is.
         """
