@@ -4,6 +4,7 @@ The module implements decoders for LDPC codes. Currently implemented:
 [Log-SPA algorithm](https://yairmz.github.io/LDPC/ldpc_overview/log_spa.html).
    - MS - Initializing the [LogSpaDecoder](log_spa_decoder.py) decoder using `MS` as the `decoder_type` argument will result in an MS decoder
    - Bit Flipping  - Gallager bit flipping algorithm. See [GalBfDecoder](gal_bf.py)
+   - Weighted Bit Flipping - Three Weighted bit flipping algorithms. See [WbfDecoder](wbf.py)
 
 ------
 ## Examples:
@@ -43,8 +44,8 @@ for frame_idx in range(len(corrupted) // decoder.n):
     #   - decode_success is a boolean flag stating of the estimated_bits form a valid  code word
     #   - no_iterations is the number of iterations of belief propagation before exiting the loop
     decoder_output = decoder.decode(corrupted[frame_idx * decoder.n: (frame_idx + 1) * decoder.n])
-    decoded += decoder_output[0]
-    decoded_info += decoder.info_bits(decoder_output[0])
+    decoded += Bits(auto=decoder_output[0])
+    decoded_info += Bits(auto=decoder.info_bits(decoder_output[0]))
 assert sum(encoded_ref ^ decoded) == 0
 assert sum(info_bits ^ decoded_info) == 0
 ```

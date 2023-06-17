@@ -2,13 +2,9 @@ from numpy.typing import ArrayLike, NDArray
 import numpy as np
 from typing import Optional
 from ldpc.utils import IncorrectLength
+from ldpc.decoder.common import InfoBitsNotSpecified
 
-__all__ = ["GalBfDecoder", "InfoBitsNotSpecified"]
-
-
-class InfoBitsNotSpecified(Exception):
-    """Raised when a non-binary matrix is used while a binary one expected"""
-    pass
+__all__ = ["GalBfDecoder"]
 
 
 class GalBfDecoder:
@@ -38,11 +34,10 @@ class GalBfDecoder:
         :return: return a tuple (estimated_bits, llr, decode_success, no_iterations)
         where:
             - estimated_bits is a 1-d np array of hard bit estimates
-            - llr is a 1-d np array of soft bit estimates
             - decode_success is a boolean flag stating of the estimated_bits form a valid  code word
             - no_iterations is the number of iterations of belief propagation before exiting the loop
             - syndrome
-            - a measure of validity of each vnode, higher is better
+            - a measure of validity of each vnode, lower is better
         """
         if len(channel_word) != self.n:
             raise IncorrectLength("incorrect block size")
@@ -56,10 +51,10 @@ class GalBfDecoder:
             if not syndrome.any():  # no errors detected, exit
                 break
             # for each vnode how many equations are failed
-            vnode_validity: NDArray[np.int_] = syndrome @ self.h
+            vnode_validity = syndrome @ self.h
             num_suspected_vnodes = sum(vnode_validity > 0)
-            num_flip_bits = 1#max(1, num_suspected_vnodes//self.percent_flipped)  # flip 10% of the suspected bits
-            flip_bits = np.argpartition(vnode_validity,-num_flip_bits)[-num_flip_bits:]
+            num_flip_bits = 1  # max(1, num_suspected_vnodes//self.percent_flipped)  # flip 10% of the suspected bits
+            flip_bits = np.argpartition(vnode_validity, -num_flip_bits)[-num_flip_bits:]
             channel_word[flip_bits] = 1 - channel_word[flip_bits]
 
         return channel_word, not syndrome.any(), iteration+1, syndrome, vnode_validity

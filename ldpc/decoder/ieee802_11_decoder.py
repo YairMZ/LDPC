@@ -1,6 +1,6 @@
 from ldpc.decoder.log_spa_decoder import LogSpaDecoder
 import numpy as np
-from ldpc.decoder.channel_models import ChannelModel
+from ldpc.decoder.common import ChannelModel
 from ldpc.wifi_spec_codes import WiFiSpecCode
 import os
 from ldpc.utils.qc_format import QCFile

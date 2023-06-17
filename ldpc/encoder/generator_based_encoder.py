@@ -1,15 +1,12 @@
-import bitstring
-
 from ldpc.encoder.base_encoder import Encoder
 import numpy as np
-import numpy.typing as npt
-from bitstring import Bits
+from numpy.typing import NDArray
 from ldpc.utils.custom_exceptions import NonBinaryMatrix, IncorrectLength
 
 
 class EncoderG(Encoder):
     """Encoder which is based on multiplying the generator matrix by message bits"""
-    def __init__(self, generator: npt.NDArray[np.int_]) -> None:
+    def __init__(self, generator: NDArray[np.int_]) -> None:
         """
         :param generator: generator matrix, should be a binary matrix
         :raises: NonBinaryMatrix if matrix elements are non-binary
@@ -20,7 +17,7 @@ class EncoderG(Encoder):
         k, n = generator.shape
         super().__init__(k, n)
 
-    def encode(self, information_bits: Bits) -> Bits:
+    def encode(self, information_bits: NDArray[np.int_]) -> NDArray[np.int_]:
         if len(information_bits) != self.k:
             raise IncorrectLength
-        return bitstring.Bits(np.matmul(np.array(information_bits, dtype=np.int_), self.generator))
+        return np.matmul(np.array(information_bits, dtype=np.int_), self.generator) % 2  # type: ignore

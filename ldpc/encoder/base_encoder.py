@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from bitstring import Bits
+from numpy.typing import NDArray
+import numpy as np
 
 
 class Encoder(ABC):
@@ -13,7 +14,7 @@ class Encoder(ABC):
         self.n = n
 
     @abstractmethod
-    def encode(self, information_bits: Bits) -> Bits:
+    def encode(self, information_bits: NDArray[np.int_]) -> NDArray[np.int_]:
         """
         This method is used to encode information bits
         :param information_bits:

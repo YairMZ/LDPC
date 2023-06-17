@@ -5,7 +5,7 @@ from typing import Any, Optional, Tuple
 from functools import total_ordering
 from abc import ABC, abstractmethod
 import numpy.typing as npt
-from ldpc.decoder.channel_models import ChannelModel
+from ldpc.decoder.common import ChannelModel
 from numba import jit
 
 
@@ -22,7 +22,7 @@ def c_message(requester_uid: int, senders: Tuple[int], received_messages: Tuple[
             ) / 2), 1e3 * np.finfo(np.float_).eps))
 
 
-@total_ordering  # type: ignore
+@total_ordering
 class Node(ABC):
     """Base class VNodes anc CNodes.
     Derived classes are expected to implement an "initialize" and  method a "message" which should return the message to
@@ -110,7 +110,8 @@ class CNode(Node):
             return np.prod(np.sign(q)) * np.absolute(q).min()   # type: ignore
 
         # full BP
-        return c_message(requester_uid, tuple(self.received_messages.keys()), tuple(self.received_messages.values()))  # type: ignore
+        return c_message(requester_uid, tuple(self.received_messages.keys()), tuple(self.received_messages.values())
+                         )  # type: ignore
 
         # def phi(x: npt.NDArray[np.float_]) -> npt.NDArray[np.float_]:
         #     """see sources for definition and reasons for use of this function"""

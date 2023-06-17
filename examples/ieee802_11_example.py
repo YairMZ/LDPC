@@ -7,7 +7,7 @@ from ldpc.utils import QCFile
 
 # create information bearing bits
 rng = np.random.default_rng()
-info_bits = Bits(bytes=rng.bytes(41))[:648//2]
+info_bits = np.array(Bits(bytes=rng.bytes(41))[:648//2], dtype=np.int_)
 # create encoder with frame of 648 bits, and rate 1/2. Possible rates and frame sizes are per the ieee802.11n spec.
 enc = EncoderWiFi(WiFiSpecCode.N648_R12)
 # encode bits

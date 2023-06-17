@@ -37,6 +37,7 @@ simulations.
    - Log-SPA based BP decoder
    - MS decodcer
    - Gallager bit filpping decoder
+   - Weighted bit flipping decoders, several variants
 
 -----
 
@@ -51,7 +52,7 @@ from ldpc.utils import QCFile
 
 # create information bearing bits
 rng = np.random.default_rng()
-info_bits = Bits(bytes=rng.bytes(41))[:648//2]
+info_bits = np.array(Bits(bytes=rng.bytes(41))[:648//2], dtype=np.int_)
 # create encoder with frame of 648 bits, and rate 1/2. Possible rates and frame sizes are per the ieee802.11n spec.
 enc = EncoderWiFi(WiFiSpecCode.N648_R12)
 # encode bits
@@ -74,7 +75,7 @@ for idx in error_idx:
     corrupted[idx] = not corrupted[idx]
 decoded, llr, decode_success, num_of_iterations, syndrome, vnode_validity  = decoder.decode(corrupted)
 # Verify correct decoding
-print(Bits(decoded) == encoded)  # true
+print(Bits(decoded) == Bits(encoded))  # true
 info = decoder.info_bits(decoded)
 
 # a decoder can also be instantiated without a channel model, in which case llr is expected to be sent for decoding instead of
@@ -83,7 +84,7 @@ channel = bsc_llr(p=p)
 channel_llr = channel(np.array(corrupted, dtype=np.int_))
 decoder = DecoderWiFi(spec=WiFiSpecCode.N648_R12, max_iter=20)
 decoded, llr2, decode_success, num_of_iterations, syndrome, vnode_validity  = decoder.decode(channel_llr)
-print(Bits(decoded) == encoded)  # true
+print(Bits(decoded) == Bits(encoded))  # true
 info = decoder.info_bits(decoded)
 ```
 The example is also included as a jupyter notebook. Note however, that you need to launch the notebook from the correct 
