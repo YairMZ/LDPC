@@ -1,5 +1,5 @@
 import numpy as np
-from ldpc.decoder import DecoderWiFi,awgn_llr, GalBfDecoder, WbfDecoder,WbfVariant
+from ldpc.decoder import DecoderWiFi, awgn_llr, GalBfDecoder, WbfDecoder, WbfVariant
 from ldpc.encoder import EncoderWiFi
 from ldpc.wifi_spec_codes import WiFiSpecCode
 from ldpc.utils import QCFile
@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 enc = EncoderWiFi(WiFiSpecCode.N648_R12)
 # create information bearing bits
 rng = np.random.default_rng()
-info_bits = np.unpackbits(np.frombuffer(rng.bytes(2*10**4),dtype=np.uint8))
+info_bits = np.unpackbits(np.frombuffer(rng.bytes(2*10**4), dtype=np.uint8))
 # trim some bits to get full frames, we use code with k=324
 info_bits = info_bits[:-(len(info_bits) % enc.k)]
 
@@ -25,15 +25,15 @@ h = QCFile.from_file("../ldpc/code_specs/ieee802.11/N648_R12.qc").to_array()
 spa_decoder = DecoderWiFi(spec=WiFiSpecCode.N648_R12, max_iter=20)
 ms_decoder = DecoderWiFi(spec=WiFiSpecCode.N648_R12, max_iter=20, decoder_type="MS")
 bf_decoder = GalBfDecoder(h=h, max_iter=300)
-wbf_decoder = WbfDecoder(h=h,max_iter=300,decoder_variant=WbfVariant.WBF)
-mwbf_decoder = WbfDecoder(h=h,max_iter=300,decoder_variant=WbfVariant.MWBF,confidence_coefficient=1)
-mwbf_no_loops_decoder = WbfDecoder(h=h,max_iter=300,decoder_variant=WbfVariant.MWBF_NO_LOOPS,confidence_coefficient=1)
+wbf_decoder = WbfDecoder(h=h, max_iter=200, decoder_variant=WbfVariant.WBF)
+mwbf_decoder = WbfDecoder(h=h, max_iter=300, decoder_variant=WbfVariant.MWBF, confidence_coefficient=1)
+mwbf_no_loops_decoder = WbfDecoder(h=h, max_iter=300, decoder_variant=WbfVariant.MWBF_NO_LOOPS, confidence_coefficient=1)
 
 # consider BPSK signaling
 baseband = 1 - 2 * encoded
 rng = np.random.default_rng()
 
-snr_db = np.arange(-2,5)
+snr_db = np.arange(-2, 5)
 spa_fer = np.zeros(len(snr_db))
 ms_fer = np.zeros(len(snr_db))
 bf_fer = np.zeros(len(snr_db))
@@ -62,8 +62,8 @@ for idx, snr in enumerate(snr_db):
         ms_ber[idx] += np.sum(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
         ms_fer[idx] += np.any(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
         d = bf_decoder.decode(channel(noisy[frame_idx * enc.n: (frame_idx + 1) * enc.n]))[0]
-        bf_ber[idx] += np.sum(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
-        bf_fer[idx] += np.any(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
+        bf_ber[idx] += np.sum(d ^ encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
+        bf_fer[idx] += np.any(d ^ encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
         d = wbf_decoder.decode(channel(noisy[frame_idx * enc.n: (frame_idx + 1) * enc.n]))[0]
         wbf_ber[idx] += np.sum(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
         wbf_fer[idx] += np.any(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
@@ -102,7 +102,7 @@ wbf_ber /= len(encoded)
 mwbf_ber /= len(encoded)
 mwbf_no_loops_ber /= len(encoded)
 
-# plot BER and FER curves for different decoders vs SNR
+plot BER and FER curves for different decoders vs SNR
 
 fig, ax = plt.subplots(nrows=1, ncols=1)
 ax.semilogy(snr_db, spa_fer, color='red', linestyle='-', label='SPA-FER')
