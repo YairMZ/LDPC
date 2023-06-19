@@ -50,8 +50,9 @@ class WbfDecoder:
             # for each vnode j, which cnodes i are connected to it, referred to as the "M_j" set in by Ryan
             self.vnode2check = {j: [i for i in range(self.m) if self.h[i, j] == 1] for j in range(self.n)}
         if self.decoder_variant in {WbfVariant.MWBF, WbfVariant.MWBF_NO_LOOPS}:
-            mean_mj_size = np.array([len(self.vnode2check[j]) for j in range(self.n)]).mean()
-            self.confidence_coefficient: float = kwargs.get("confidence_coefficient", 1/mean_mj_size)
+            mean_vnode_degree = np.sum(self.h,axis=0).mean()
+            mean_check_degree = np.sum(self.h, axis=1).mean()
+            self.confidence_coefficient: float = kwargs.get("confidence_coefficient", mean_vnode_degree/mean_check_degree)
 
     def decode(self, channel_llr: NDArray[np.float_], prior_reliability: Optional[NDArray[np.float_]] = None) \
             -> tuple[NDArray[np.int_], bool, int, NDArray[np.int_], NDArray[np.int_]]:
