@@ -5,6 +5,7 @@ The module implements decoders for LDPC codes. Currently implemented:
    - MS - Initializing the [LogSpaDecoder](log_spa_decoder.py) decoder using `MS` as the `decoder_type` argument will result in an MS decoder
    - Bit Flipping  - Gallager bit flipping algorithm. See [GalBfDecoder](gal_bf.py)
    - Weighted Bit Flipping - Three Weighted bit flipping algorithms. See [WbfDecoder](wbf.py)
+   - - Parallel probabilistic bit flipping decoder, based on "A Probabilistic Parallel Bit-Flipping Decoder for Low-Density Parity-Check Codes". See [PbfDecoder](pbf_decoder.py)
 
 ------
 ## Examples:

@@ -38,7 +38,7 @@ simulations.
    - MS decodcer
    - Gallager bit filpping decoder
    - Weighted bit flipping decoders, several variants
-
+   - Parallel probabilistic bit flipping decoder (PPBF)
 -----
 
 ## Basic Example
