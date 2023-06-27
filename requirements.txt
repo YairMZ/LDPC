@@ -1,5 +1,5 @@
-numpy~=1.24.3
+numpy~=1.25.0
 bitstring
-scipy~=1.10.1
+scipy~=1.11.0
 networkx~=2.6.3
 numba~=0.57.0
