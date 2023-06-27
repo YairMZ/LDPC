@@ -54,7 +54,7 @@ class PbfDecoder:
                 self._verify_p_vector(self.p_vector)
 
 
-    def decode(self, channel_word: NDArray[np.int_], prior: Optional[NDArray[np.int_]] = None,
+    def decode(self, channel_word: NDArray[np.int_], to_flip: int, prior: Optional[NDArray[np.int_]] = None,
                p_vector: Optional[NDArray[np.float_]] = None) \
             -> tuple[NDArray[np.int_], NDArray[np.float_], bool, int, NDArray[np.int_], NDArray[np.int_]]:
         """
@@ -87,12 +87,14 @@ class PbfDecoder:
             self._verify_p_vector(p_vector)
         # initialize the vnodes to the channel word
         vnode_values = channel_word.copy()
+        energy = np.zeros(self.n, dtype=np.int_)
         for iteration in range(self.max_iter):
             syndrome = self.h @ vnode_values % 2
             if not syndrome.any():  # no errors detected, exit
                 break
             # for each vnode how many equations are failed
-            vnode_reliability = np.array((syndrome @ self.h)*max(self.vnode_degree) / self.vnode_degree).astype(np.int_)
+            # vnode_reliability = np.array((syndrome @ self.h)*max(self.vnode_degree) / self.vnode_degree).astype(np.int_)
+            vnode_reliability = syndrome @ self.h
             flipped_vnodes = vnode_values ^ channel_word
             prior_mask = np.array(prior != -1, dtype=np.int_)
             prior_reliability = np.bitwise_xor(prior, vnode_values) * prior_mask
@@ -104,15 +106,29 @@ class PbfDecoder:
 
             # Draw a random bit according ta bernoulli distribution with the calculated probability per vnode energy.
             # If the drawn bit is 1, flip the current value of the vnode
-            bit_flip_p = np.array([p_vector[energy[i]] for i in range(self.n)])
+            max_dv = max(self.vnode_degree)
+            bit_flip_p = np.array([p_vector[energy[i]]*max_dv / self.vnode_degree[i] for i in range(self.n)])
+            # bit_flip_p = np.array([p_vector[energy[i]] for i in range(self.n)])
+            # expected number of flipped bits is sum of bit_flip_p
+            if np.sum(bit_flip_p) > to_flip:
+                bit_flip_p = bit_flip_p * to_flip / np.sum(bit_flip_p)
             flipped = np.random.binomial(1, bit_flip_p)
+            if np.sum(flipped) == 0:
+                # if no bit was flipped, flip the one with the highest energy
+                flip_bit = np.argwhere(energy == np.amax(energy)).flatten()
+                if len(flip_bit) > 1:  # if there are several bits with the same reliability, choose one at random
+                    flip_bit = np.random.choice(flip_bit)
+                flipped[flip_bit] = 1
             vnode_values = np.bitwise_xor(vnode_values, flipped)
 
         # we output also soft information (LLR) for each bit which can be used for Turbo decoding
         # the LLR is calculated as the log of the ratio of probabilities of the bit being 1 or 0
         # Since hte absolute value of the LLR indicates the confidence in the bit value, we use p_vector[energy] of each vnode
         # as a crossover probability of a hypothetical BSC channel with the same LLR
-        channels = [bsc_llr(p) for p in p_vector]
+        p_regular = p_vector.copy()
+        p_regular[p_regular < p_regular[1]] = p_regular[1]  # add regularization to avoid too much confidence in any bit
+        p_regular[-1] = p_regular[-2]  # add regularization to avoid too little confidence in any bit (it actually explodes!!!)
+        channels = [bsc_llr(p) for p in p_regular]
         llr = np.array([channels[energy[i]](vnode_values[i]) for i in range(self.n)])
         return vnode_values, llr, not syndrome.any(), iteration, syndrome, energy
 

@@ -65,7 +65,7 @@ class TestQCFile:
         a = QCFile.from_array(arr, z)
         arr = sp.lil_matrix(arr)
         b = a.to_sparse()
-        assert sp.spmatrix.sum(arr != b) == 0
+        assert sp.lil_matrix.sum(arr != b) == 0
         a.block_structure[0][0] = a.z
         with pytest.raises(InconsistentQCFile):
             a.to_sparse()

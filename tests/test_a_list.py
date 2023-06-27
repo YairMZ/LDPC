@@ -73,4 +73,4 @@ class TestAList:
                                                  [0, 1, 3],
                                                  [0, 2, 3]]
         b = a.to_sparse()
-        assert sp.spmatrix.sum(arr != b) == 0
+        assert sp.lil_matrix.sum(arr != b) == 0
