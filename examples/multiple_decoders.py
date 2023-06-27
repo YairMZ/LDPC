@@ -64,13 +64,13 @@ for idx, snr in enumerate(snr_db):
         d = bf_decoder.decode(channel(noisy[frame_idx * enc.n: (frame_idx + 1) * enc.n]))[0]
         bf_ber[idx] += np.sum(d ^ encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
         bf_fer[idx] += np.any(d ^ encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
-        d = wbf_decoder.decode(channel(noisy[frame_idx * enc.n: (frame_idx + 1) * enc.n]))[0]
+        d = wbf_decoder.decode(noisy[frame_idx * enc.n: (frame_idx + 1) * enc.n])[0]
         wbf_ber[idx] += np.sum(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
         wbf_fer[idx] += np.any(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
-        d = mwbf_decoder.decode(channel(noisy[frame_idx * enc.n: (frame_idx + 1) * enc.n]))[0]
+        d = mwbf_decoder.decode(noisy[frame_idx * enc.n: (frame_idx + 1) * enc.n])[0]
         mwbf_ber[idx] += np.sum(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
         mwbf_fer[idx] += np.any(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
-        d = mwbf_no_loops_decoder.decode(channel(noisy[frame_idx * enc.n: (frame_idx + 1) * enc.n]))[0]
+        d = mwbf_no_loops_decoder.decode(noisy[frame_idx * enc.n: (frame_idx + 1) * enc.n])[0]
         mwbf_no_loops_ber[idx] += np.sum(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
         mwbf_no_loops_fer[idx] += np.any(d^encoded[frame_idx * enc.n: (frame_idx + 1) * enc.n])
         if frame_idx % 10 == 0:
@@ -102,7 +102,7 @@ wbf_ber /= len(encoded)
 mwbf_ber /= len(encoded)
 mwbf_no_loops_ber /= len(encoded)
 
-plot BER and FER curves for different decoders vs SNR
+# plot BER and FER curves for different decoders vs SNR
 
 fig, ax = plt.subplots(nrows=1, ncols=1)
 ax.semilogy(snr_db, spa_fer, color='red', linestyle='-', label='SPA-FER')
@@ -128,5 +128,5 @@ ax.set_position([box.x0, box.y0 + box.height * 0.2,
 # Put a legend below current axis
 ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
           fancybox=True, shadow=True, ncol=3)
-fig.savefig("buffer_success_rate_vs_snr.eps", dpi=150)
+fig.savefig("ber_fer_vs_snr.eps", dpi=150)
 plt.show()
